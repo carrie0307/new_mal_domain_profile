@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="{{static_url('css/domain_status_history.css')}}">
+{% end %}
+
+{% block page %}
+
+
+<div class="row">
+    <div class="col-lg-12 page-header">
+        <h1><p class="source_title" id="title" style="display:inline-block"></p>IP历史状态探测</h1>
+    </div>
+</div>
+
+<!--<div class="row">-->
+    <!--<div class="col-lg-12">-->
+        <!--<div class="col-lg-7">-->
+            <!--<div class="panel panel-info">-->
+                <!--<div class="panel-heading">-->
+                    <!--<li class="fa fa-group fa-fw"></li>-->
+                    <!--<p class="source_title" style="display:inline-block"></p>服务IP数量变化曲线-->
+                <!--</div>-->
+                <!--<table class="table table-striped table-hover table-bordered" style="width:100%;height:300px;">-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-5">-->
+            <!--<div class="panel panel-info">-->
+                <!--<div class="panel-heading">-->
+                    <!--<li class="fa fa-group fa-fw"></li>-->
+                    <!--<p class="source_title" style="display:inline-block"></p>服务IP网段分布比例图-->
+                <!--</div>-->
+                <!--<table class="table table-striped table-hover table-bordered" style="width:100%;height:300px;">-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="col-lg-12">-->
+
+    <!--</div>-->
+<!--</div>-->
+
+<div class="row" style="margin: 0 0 0 0;">
+    <!--<div class="col-lg-12">-->
+        <!--<h2>IP历史状态探测记录</h2>-->
+    <!--</div>-->
+    <div class="col-lg-12">
+        <ul id='timeline'>
+            <li>
+                <div class="block_list">
+                    <h2 class="ip_total">IP集合</h2>
+                    <p>
+                        <span class="IP-style">52.86.22.136 &nbsp &nbsp &nbsp 80端口-开放</span>
+                        <span class="IP-style">52.86.22.136 &nbsp &nbsp &nbsp 80端口-开放</span>
+                    </p>
+                    <h3 class="ip_add">增加的IP</h3>
+                    <p>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                    </p>
+                    <h3 class="ip_reduce">减少的IP</h3>
+                    <p>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                    </p>
+                    <span class='date'>11 May 2013</span>
+                    <span class="circle"></span>
+                    <span class="square"></span>
+                </div>
+            </li>
+            <li>
+                <div class="block_list">
+                    <h2 class="ip_total">IP集合</h2>
+                    <p>
+                        <span class="IP-style">52.86.22.136 &nbsp &nbsp &nbsp 80端口-开放</span>
+                        <span class="IP-style">52.86.22.136 &nbsp &nbsp &nbsp 80端口-开放</span>
+                    </p>
+                    <h3 class="ip_add">增加的IP</h3>
+                    <p>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                    </p>
+                    <h3 class="ip_reduce">减少的IP</h3>
+                    <p>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                    </p>
+                    <span class='date'>11 May 2013</span>
+                    <span class="circle"></span>
+                    <span class="square"></span>
+                </div>
+            </li>
+            <li>
+                <div class="block_list">
+                    <h2 class="ip_total">IP集合</h2>
+                    <p>
+                        <span class="IP-style">52.86.22.136 &nbsp &nbsp &nbsp 80端口-开放</span>
+                        <span class="IP-style">52.86.22.136 &nbsp &nbsp &nbsp 80端口-开放</span>
+                    </p>
+                    <h3 class="ip_add">增加的IP</h3>
+                    <p>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                    </p>
+                    <h3 class="ip_reduce">减少的IP</h3>
+                    <p>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                        <span class="IP-style" style="">127.0.0.1:8020</span>
+                    </p>
+                    <span class='date'>11 May 2013</span>
+                    <span class="circle"></span>
+                    <span class="square"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% end %}
+
+{% block scripts %}
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<!--<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>-->
+<script src="{{ static_url("js/analyse.js")}}"></script>
+<script src="{{ static_url("js/ajax.js")}}"></script>
+<script type="text/javascript">
+    var url="/ip_history/data";
+    paras = {};
+    paras['ul_id'] = 'timeline';
+    $("#timeline").html("");
+    var option={};
+    var domain = {% raw domain %};
+    option['domain'] = domain;
+
+    $("#title").html(domain + "&nbsp");
+
+    showData(url,option,paras,[deal_ip_history]);
+
+
+</script>
+
+{% end %}

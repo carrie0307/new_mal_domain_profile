@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block style %}
+<style>
+</style>
+{% end %}
+{% block page %}
+<div class="row">
+    <div class="col-lg-12 header1">
+        <h1>关键信息反查</h1>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-lg-12 find">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-5">
+                <div class="input-group">
+                    <input type="text" id="value" value = "" class="form-control" placeholder="请输入您要查询的信息">
+                    <div class="input-group-btn" style="width:0%">
+                        <select id="source" style="border: 1px solid #ccc;background-color: white;" class="selectpicker form-control">
+                            <option selected="selected" value="pos">省份</option>
+                            <option value="sponsoring_registrar">注册商</option>
+                            <option value="reg_phone">注册电话</option>
+                            <option value="reg_email">注册邮箱</option>
+                            <option value="reg_name">注册者</option>
+                            <option value="ip">服务IP</option>
+                        </select>
+                    </div>
+                    <div class="input-group-btn">
+                        <button type="button" id="btn_query" class="btn btn-primary">查询</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<hr/>
+<!--表格-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <li class="fa fa-group fa-fw"></li>
+                <p id="source_title" style="display:inline-block">注册商</p>反查赌博类域名信息总览
+            </div>
+            <table id="pos_table1" class="table table-striped table-hover table-bordered" style="width:100%;">
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <li class="fa fa-group fa-fw"></li>
+                <p id="source_title" style="display:inline-block">注册商</p>反查色情类域名信息总览
+            </div>
+            <table id="pos_table2" class="table table-striped table-hover table-bordered" style="width:100%;">
+            </table>
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block scripts %}
+<script charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+<script src="{{ static_url("js/table.js")}}"></script>
+<script src="{{ static_url("js/ajax.js")}}"></script>
+<script type="text/javascript">
+    var data = {% raw data %};
+    var source = {% raw source %};
+    var value = {% raw value %};
+    var option = {};
+    var url = '/keyinfo_query/data';
+    var cols = [
+            {
+                "data": "domain",
+                "title": "域名"
+            },
+            {
+                "data": 'dm_type',
+                "title": "域名类型"
+            },
+            {
+                "data": 'web_status',
+                "title": "首页状态"
+            },
+            {
+                "data": "server_ip",
+                "title": "服务IP"
+            },
+            {
+                "data": "ip_num",
+                "title": "服务IP总数"
+            },
+            {
+                "data": "ip_geo",
+                "title": "IP归属地"
+            },
+            {
+                "data": "enter_num",
+                "title": "链入站点数"
+            },
+            {
+                "data": "outer_num",
+                "title": "链出站点数"
+            },
+            {
+                "data": "detect_time",
+                "title": "探测时间"
+            }
+        ];
+    var paras={
+        table_cols:[cols,cols],
+        table_ids:['pos_table1','pos_table2'],
+        rows:[100,100],
+        aoColumnDefs :  [{
+                "aTargets" :　[0],
+                "mRender" : function(data){
+                    return "<a href='/domain_figure_query?domain="+data+"'>"+data+"</a>";
+                }
+          },{
+                "aTargets" :　[3],
+                "mRender" : function(data){
+                    return "<a href='/illegal_orgs_query?source=ip&value="+data+"'>"+data+"</a>";
+                }
+          }
+        ]
+    };
+    $('#value').val(value);
+    m=document.getElementById('source');
+    for(var i=0;i<=m.options.length;i++){
+        if(m.options[i].value == source){
+            m.options[i].selected=true;
+            break;
+        }
+    }
+    show_overview_tables(data,paras);
+    $(document).ready(function(){
+        $("#btn_query").click(function(){
+            option['source'] = $("#source").val();
+            option['value'] = $("#value").val();
+            $('#source_title').text($('#source').find("option:selected").text());
+            showData(url,option,paras,[show_overview_tables]);
+        });
+    });
+</script>
+{% end %}

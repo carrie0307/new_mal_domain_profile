@@ -1,0 +1,96 @@
+
+
+#timeline {
+  list-style: none;
+  margin: 50px 0 30px 200px;
+  padding-left: 40px;
+  border-left: 10px solid #afdcf8;
+}
+
+.block_list{
+  margin: 40px 0;
+  position: relative;
+  font-size: 20px;
+  background-color: #3594cb;
+  border-radius: 7px;
+  padding: 10px 20px;
+  border-bottom: 2px solid #3594cb;
+}
+
+.block_list h2{
+    color: #fff;
+    padding-bottom: 10px;
+}
+
+.block_list h3{
+    color: #fff;
+    padding-bottom: 10px;
+}
+
+.block_list p{
+    color: royalblue;
+}
+
+.date {
+  margin-top: -7px;
+  top: 50%;
+  left: -30%;
+  font-size: 0.95em;
+  line-height: 20px;
+  position: absolute;
+  color: #3594cb;
+}
+
+.IP-style{
+	font-size: 16px;
+	color: royalblue;
+	background: #fff;
+	padding: 10px;
+	border-radius: 10px;
+	margin: 10px;
+}
+
+.circle{
+    margin-top: -10px;
+    top: 50%;
+    left: -57px;
+    width: 25px;
+    height: 25px;
+    background: #6cbfee;
+    border: 7px solid #afdcf8;
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+}
+
+.square{
+    margin-top: -10px;
+    top: 50%;
+    left: -30px;
+    width: 0;
+    height: 0;
+    border-width:15px;
+    border-style: solid;
+    border-color: transparent #3594cb transparent transparent;
+    display: block;
+    position: absolute;
+}
+
+.innerdiv{
+	top: 10%;
+	left: 35%;
+	bottom: 10px;
+	padding: 10px;
+	position:absolute;
+	background-color: #fff;
+}
+
+.outerdiv{
+    position:fixed;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.7);
+    z-index:2;width:100%;
+    height:100%;
+    display:none;
+}

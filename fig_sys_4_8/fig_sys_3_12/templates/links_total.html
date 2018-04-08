@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block page %}
+
+<div class="row">
+    <div class="col-lg-12 page-header">
+        <h1><p class="source_title" id="title" style="display:inline-block"></p>内外链总览</h1>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="links_enter">
+            <h4>链入连接数量 : <strong style="color:#31708f;font-size:30px;">{{ links_enter_num }}</strong></h4>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <li class="fa fa-group fa-fw"></li>
+                    <p class="source_title" style="display:inline-block"></p>合法网站入口
+                </div>
+                <table id="legal_links_enter" class="table table-striped table-hover table-bordered" style="width:100%;">
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <li class="fa fa-group fa-fw"></li>
+                    <p class="source_title" style="display:inline-block"></p>非法网站入口
+                </div>
+                <table id="illegal_links_enter" class="table table-striped table-hover table-bordered" style="width:100%;">
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="links_outer">
+            <h4>链出连接数量 : <strong style="color:#31708f;font-size:30px;">{{ links_outer_num }}</strong></h4>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <li class="fa fa-group fa-fw"></li>
+                    <p class="source_title" style="display:inline-block"></p>外链
+                </div>
+                <table id="outer_links" class="table table-striped table-hover table-bordered" style="width:100%;">
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <li class="fa fa-group fa-fw"></li>
+                    <p class="source_title" style="display:inline-block"></p>内链
+                </div>
+                <table id="inter_links" class="table table-striped table-hover table-bordered" style="width:100%;">
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <li class="fa fa-group fa-fw"></li>
+                    <p class="source_title" style="display:inline-block"></p>暗链
+                </div>
+                <table id="hidden_links" class="table table-striped table-hover table-bordered" style="width:100%;">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% end %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+<script src="{{ static_url("js/table.js")}}"></script>
+<script type="text/javascript">
+    domain = {% raw domain %};
+    document.getElementById("title").innerHTML= domain;
+
+    results = {% raw results %};
+    links_enter_num = {% raw links_enter_num %};
+    links_outer_num = {% raw links_outer_num %};
+
+    legal_links_enter = results['links_enter']['legal_links_enter']['links'];
+    illegal_links_enter = results['links_enter']['illegal_links_enter']['links'];
+
+    outer_links = results['links_outer']['outer_links']['links'];
+    inter_links = results['links_outer']['inter_links']['links'];
+    hidden_links = results['links_outer']['hidden_links']['links'];
+
+    var cols = [
+            {
+                "data": "url",
+                "title": "URL"
+            },
+            {
+                "data": "domain",
+                "title": "域名"
+            }
+        ];
+
+    function linktable(data,parameter){
+        var paras = {
+            table_id:parameter[0],
+            cols:parameter[1],
+            rows:20,
+            aoColumnDefs :  [{
+                    "aTargets" :　[1],
+                    "mRender" : function(data){
+                        return "<a href='/domain_figure_query?domain="+data+"'>"+data+"</a>";
+                    }
+            },
+            {
+                    "aTargets" :　[0],
+                    "mRender" : function(data){
+                        return "<a href="+data+">"+data+"</a>";
+                    }
+            }
+            ]
+        };
+        showtable(data,paras);
+    };
+
+
+    var legal_table_id = "legal_links_enter";
+    linktable(legal_links_enter,[legal_table_id,cols]);
+
+    var illegal_table_id = "illegal_links_enter";
+    linktable(illegal_links_enter,[illegal_table_id,cols]);
+
+    var outer_table_id = "outer_links";
+    linktable(outer_links,[outer_table_id,cols]);
+
+    var inter_table_id = "inter_links";
+    linktable(inter_links,[inter_table_id,cols]);
+
+    var hidden_table_id = "hidden_links";
+    linktable(hidden_links,[hidden_table_id,cols]);
+
+
+</script>
+
+{% end %}

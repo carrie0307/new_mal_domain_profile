@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="{{static_url('css/domain_status_history.css')}}">
+{% end %}
+
+{% block page %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 id="content_title" style="border-bottom: 1px solid #8C8C8C;padding-bottom: 10px;margin-bottom: 20px;">页面内容历史记录</h1>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="col-lg-12">
+            <ul id='timeline'>
+                <li>
+                    <div class="block_list">
+                        <h4 style="color: #FFFFFF;">内容信息</h4>
+                        <table class="table table-bordered" style="color: #fff;font-size: 16px;">
+                            <tr>
+                                <td>页面标题</td>
+                                <td>百度</td>
+                            </tr>
+                            <tr>
+                                <td>页面关键词</td>
+                                <td>百度</td>
+                            </tr>
+                            <tr>
+                                <td>重定向域名</td>
+                                <td>https://www.baidu.com</td>
+                            </tr>
+                            <tr>
+                                <td>页面描述</td>
+                                <td>百度（纳斯达克：BIDU），全球最大的中文搜索引擎、最大的中文网站。</td>
+                            </tr>
+                            <tr>
+                                <td>快照获取</td>
+                                <td>获取成功</td>
+                            </tr>
+                        </table>
+                        <h4 style="color: #FFFFFF;">快照</h4>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td><img class="snap" src="/static/images/map_1.jpg" style="width: 720px;height: 400px;"></td>
+                            </tr>
+                        </table>
+
+                        <div class="outerdiv" style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
+                            <div class="innerdiv" style="position:absolute;overflow:scroll;">
+                                <img class="bigimg" style="border:5px solid #fff;" src=""/>
+                            </div>
+                        </div>
+
+
+                        <span class='date'>2026-09-09 08:22:24</span>
+                        <span class='circle'></span>
+                        <span class="square"></span>
+                    </div>
+                </li>
+                <li>
+                    <div class="block_list">
+                        <h4 style="color: #FFFFFF;">内容信息</h4>
+                        <table class="table table-bordered" style="color: #fff;font-size: 16px;">
+                            <tr>
+                                <td>页面标题</td>
+                                <td>百度</td>
+                            </tr>
+                            <tr>
+                                <td>页面关键词</td>
+                                <td>百度</td>
+                            </tr>
+                            <tr>
+                                <td>重定向域名</td>
+                                <td>https://www.baidu.com</td>
+                            </tr>
+                            <tr>
+                                <td>页面描述</td>
+                                <td>百度（纳斯达克：BIDU），全球最大的中文搜索引擎、最大的中文网站。</td>
+                            </tr>
+                            <tr>
+                                <td>快照获取</td>
+                                <td>获取成功</td>
+                            </tr>
+                        </table>
+                        <h4 style="color: #FFFFFF;">快照</h4>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td><img class="snap" src="/static/images/map_1.jpg" style="width: 720px;height: 400px;"></td>
+                            </tr>
+                        </table>
+
+                        <div class="outerdiv" style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
+                            <div class="innerdiv" style="position:absolute;overflow:scroll;">
+                                <img class="bigimg" style="border:5px solid #fff;" src=""/>
+                            </div>
+                        </div>
+
+
+                        <span class='date'>2026-09-09 08:22:24</span>
+                        <span class='circle'></span>
+                        <span class="square"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% end %}
+
+{% block scripts %}
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<!--<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>-->
+<!--<script src="{{ static_url(" js/analyse.js")}}"></script>-->
+<!--<script src="{{ static_url("js/ajax.js")}}"></script>-->
+<script type="text/javascript">
+    <!--var domain = {% raw domain %};-->
+    <!--$("#content_title").html(domain + "&nbsp 页面内容历史记录");-->
+
+    /*点击图片，并显示弹出层及大图*/
+		$(function() {
+			$(".snap").click(function() {
+				var _this = $(this); //将当前的pimg元素作为_this传入函数
+				imgShow(".outerdiv", ".innerdiv", ".bigimg", _this);
+			});
+		});
+
+		function imgShow(outerdiv, innerdiv, bigimg, _this) {
+			var src = _this.attr("src");
+			$(bigimg).attr("src", src);
+
+			/*获取当前点击图片的真实大小，并显示弹出层及大图*/
+			$("<img/>").attr("src", src).load(function() {
+				var windowW = $(window).width();
+				var windowH = $(window).height();
+				var realWidth = this.width;
+				var realHeight = this.height;
+				var imgWidth, imgHeight;
+				var scale = 0.8;
+
+				if(realWidth > windowW * scale) {
+					imgWidth = windowW * scale;
+					imgHeight = imgWidth / realWidth * realHeight;
+				} else {
+					imgWidth = realWidth;
+					imgHeight = realHeight;
+				}
+				$(bigimg).css("width", imgWidth);
+
+				var w = (windowW - imgWidth) / 2;
+				var h = (windowH - imgHeight) / 2;
+				if(h<0){
+				    h = 60;
+				};
+				$(innerdiv).css({
+					"top": h,
+					"left": w,
+					"bottom":10
+				});
+				$(outerdiv).fadeIn("fast");
+			});
+
+			$(outerdiv).click(function() {
+				$(this).fadeOut("fast");
+			});
+		}
+
+</script>
+
+{% end %}

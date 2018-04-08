@@ -1,0 +1,66 @@
+#index-header{
+    font-size:36px;
+    padding-left:350px;
+    margin-top:20px;
+    margin-bottom:0px;
+}
+
+.header2{
+    padding-bottom:20px;
+}
+
+.header3{
+    font-size:20px;
+    padding-left:10px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    color:#31708f;
+}
+
+.big-img{
+    height:80px;
+    width:170px;
+}
+
+.s-img{
+    height:80px;
+    width:170px;
+}
+
+#country-title{
+    width:135px;
+}
+
+#school-title{
+    width:135px;
+}
+
+#company-title{
+    width:175px;
+}
+
+.org-img{
+    border-radius:4px;
+    margin:20px 30px 20px 0px;
+    float:left;
+}
+
+.country-img{
+    /*width:240px;*/
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.school-img{
+    width:180px;
+    margin-left:40px;
+}
+.company-img{
+    width:180px;
+    margin-left:40px;
+}
+
+.report-img{
+    width:180px;
+    margin-left:40px;
+}

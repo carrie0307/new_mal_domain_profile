@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block style %}
+<link rel="stylesheet" href="{{static_url('css/index.css')}}">
+{% end %}
+
+{% block page %}
+<div class="row">
+    <div class="col-lg-12 header2">
+        <h3>相关研究机构概览：</h3>
+    </div>
+    <div class="col-lg-12">
+        <div class="header3  panel panel-info" style="background-color:#D9EDF7">
+            <li class="fa fa-globe fa-fw"></li>国家机构
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-6 ">
+            <div class="org-img country-img">
+                <a href="http://www.cnnic.net.cn/">
+                    <img src="{{static_url("images/relative_org/CNNIC.png")}}" alt="Logo" class="big-img" >
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="org-img country-img">
+                <a href="http://www.cert.org.cn/">
+                    <img src="{{static_url("images/relative_org/CNCERT.jpg")}}" alt="Logo" class="big-img">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="header3  panel panel-info" style="background-color:#D9EDF7">
+            <li class="fa fa-graduation-cap fa-fw"></li>高等院校
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="org-img school-img">
+            <a href="http://www.hit.edu.cn/">
+                <img src="{{static_url("images/relative_org/HARBIN.jpg")}}" alt="Logo" class="big-img">
+            </a>
+        </div>
+        <div class="org-img school-img">
+            <a href="http://www.tsinghua.edu.cn/publish/newthu/index.html">
+                <img src="{{static_url("images/relative_org/Txinghua.png")}}" alt="Logo" class="big-img">
+            </a>
+        </div>
+        <div class="org-img school-img">
+            <a href="http://www.pku.edu.cn/">
+                <img src="{{static_url("images/relative_org/PEKING.jpg")}}" alt="Logo" class="big-img">
+            </a>
+        </div>
+        <div class="org-img school-img">
+            <a href="http://www.cas.cn/">
+                <img src="{{static_url("images/relative_org/Sciences.png")}}" alt="Logo" class="big-img">
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <!--<div class="header3" id="company-title">-->
+        <div class="header3  panel panel-info" style="background-color:#D9EDF7">
+            <li class="fa fa-building fa-fw"></li>企业相关机构
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="org-img company-img">
+            <a href="http://bsb.baidu.com/">
+                <img src="{{static_url("images/relative_org/baidu.png")}}" alt="Logo" class="big-img">
+            </a>
+        </div>
+        <div class="org-img company-img">
+            <a href="http://webscan.360.cn/">
+                <img src="{{static_url("images/relative_org/360.png")}}" alt="Logo" class="big-img">
+            </a>
+        </div>
+        <div class="org-img company-img">
+            <a href="https://guanjia.qq.com/online_server/webindex.html">
+                <img src="{{static_url("images/relative_org/tencent.png")}}" alt="Logo" class="big-img">
+            </a>
+        </div>
+        <div class="org-img company-img">
+            <a href="https://www.virustotal.com/#/home/upload">
+                <img src="{{static_url("images/relative_org/virustotal.png")}}" alt="Logo" class="big-img">
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-12 header2">
+        <h3>相关举报机构概览：</h3>
+    </div>
+    <div class="col-lg-12">
+        <div class="header3  panel panel-info" style="background-color:#D9EDF7">
+            <li class="fa fa-building fa-fw"></li>权威举报网站
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="org-img report-img">
+            <a href="http://www.12377.cn/">
+                <img src="{{static_url("images/relative_org/12377.png")}}" alt="Logo" class="s-img">
+            </a>
+        </div>
+        <div class="org-img report-img">
+            <a href="https://www.12321.cn/">
+                <img src="{{static_url("images/relative_org/12321.png")}}" alt="Logo" class="s-img">
+            </a>
+        </div>
+        <div class="org-img report-img">
+            <a href="http://jubao.baidu.com/jubao/">
+                <img src="{{static_url("images/relative_org/baidujubao.png")}}" alt="Logo" class="s-img">
+            </a>
+        </div>
+        <div class="org-img report-img">
+            <a href="http://www.cyberpolice.cn/wfjb/">
+                <img src="{{static_url("images/relative_org/InternetCrime.png")}}" alt="Logo" class="s-img">
+            </a>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block scripts %}
+<script type="text/javascript">
+</script>
+{% end %}

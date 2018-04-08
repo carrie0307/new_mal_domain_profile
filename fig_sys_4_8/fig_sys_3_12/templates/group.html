@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+    {% block style %}
+    <style type="text/css">
+        html, body, #main { height: 600px; width: 100%; margin: 0; padding: 0 }
+    </style>
+    {% end %}
+{% block page %}
+
+<div class="row">
+    <div class="col-lg-12 page-header">
+        <h1><p class="source_title" style="display:inline-block">{{ domain }}</p>团伙分析</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div id="main" style=""></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <table id = 'group_table' class="table table_info">
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% end %}
+
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.0.2/echarts.min.js"></script>
+<script src="{{ static_url("js/analyse.js")}}"></script>
+<script type="text/javascript">
+    var graph_info = {% raw graph_info %};
+    var show_info = {% raw show_info %};
+    var paras = {
+      table_id:'group_table'
+    };
+    add_table_rows(show_info,paras)
+    var links = graph_info.links;
+    var nodes = graph_info.nodes;
+    var color='red';
+    var data = new Array();
+    for(var i in nodes){
+        name = nodes[i][0];
+        type = nodes[i][1];
+        if(type == 'ip'){
+            color='red';
+        }else if(type == 'cname'){
+            color='green';
+        }else if(type == 'enter_domain'){
+            color='yellow';
+        }else if(type == 'outer_domain'){
+            color='blue';
+        }else if(type == 'reg_name'){
+            color='brown';
+        }else if(type == 'reg_phone'){
+            color='#5e5f74';
+        }else if(type == 'reg_email'){
+            color='purple';
+        }else{
+            color='black';
+        }
+        item = {
+            name:name ,
+            des: "注册关键信息/域名",
+            symbolSize: 50,
+            itemStyle: {
+                normal: {
+                    color:color
+                }
+            }
+        };
+        data.push(item);
+    }
+    var myChart = echarts.init(document.getElementById('main'));
+    option = {
+        title: { text: '域名团伙分析关系图' },
+        tooltip: {
+            formatter: function (x) {
+                return x.data.des;
+            }
+        },
+        series: [
+            {
+                type: 'graph',
+                layout: 'force',
+                symbolSize: 80,
+                roam: true,
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [4, 10],
+                force: {
+                    repulsion: 2500,
+                    edgeLength: [20, 60]
+                },
+                draggable: true,
+                itemStyle: {
+                    normal: {
+                        color: '#4b565b'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        width: 2,
+                        color: '#4b565b'
+
+                    }
+                },
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        formatter: function (x) {
+                            return x.data.name;
+                        }
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                        }
+                    }
+                },
+                data: data,
+                links: links
+            }
+        ]
+    };
+    myChart.setOption(option);
+</script>
+
+{% end %}

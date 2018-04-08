@@ -1,0 +1,30 @@
+
+
+.base_info {
+    margin:20px 40px;
+    color: #5e5f74;
+    font-size: medium;
+}
+
+.table_info {
+    margin: 10px 10px;
+}
+
+.result_safety {
+    background-image: url('/static/images/detect_results/baidu_diagnosis.png');
+    background-position: 0 -48px;
+    background-repeat: no-repeat;
+    width: 194px; height: 82px;
+}
+.result_danger {
+    background-image: url('/static/images/detect_results/baidu_diagnosis.png');
+    background-position: 0 -130px;
+    background-repeat: no-repeat;
+    width: 194px; height: 82px;
+}
+.result_unknown {
+    background-image: url('/static/images/detect_results/baidu_diagnosis.png');
+    background-position: 0 -212px;
+    background-repeat: no-repeat;
+    width: 194px; height: 82px;
+}

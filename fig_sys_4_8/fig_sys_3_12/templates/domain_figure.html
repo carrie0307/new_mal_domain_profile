@@ -1,0 +1,734 @@
+{% extends "base.html" %}
+{% block style %}
+<link rel="stylesheet" href="{{static_url('css/domain_figure.css')}}">
+{% end %}
+{% block page %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-9" id="domain-name"><h1>域名画像</h1></div>
+    </div>
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-5">
+                <div class="input-group" style="margin-left: 55px;">
+                    <input type="text" id="domain" class="form-control" value="000033333.com" placeholder="请输入您要查询的域名">
+                    <div class="input-group-btn" style="margin-left: 55px;">
+                        <button type="button" id="btn_query" class="btn btn-primary">查询</button>
+                        <button class="btn btn-default">导出报告</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="row base_info" id="domain-info">
+    <div class="col-lg-12">
+        <div class="base_info">
+            域名基本信息
+        </div>
+    </div>
+    <div class="col-lg-3">
+    </div>
+    <div class="col-lg-6">
+        <table class="table table_info">
+            <tbody>
+            <tr>
+                <td>域名:</td>
+                <td id="baseinfo_1"></td>
+            </tr>
+            <tr>
+                <td>域名类型：</td>
+                <td id="baseinfo_2"></td>
+            </tr>
+            <tr>
+                <td>首页状态：</td>
+                <td id="baseinfo_3"></td>
+            </tr>
+            <tr>
+                <td>探测时间：</td>
+                <td id="baseinfo_4"></td>
+            </tr>
+            <tr>
+                <td>日均访问量：</td>
+                <td>1000 示例暂无数据</td>
+            </tr>
+            <tr>
+                <td>访问总量：</td>
+                <td>1000 示例暂无数据&nbsp;<a href="/">查看详情</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr/>
+<div class="row base_info" >
+    <div class="col-lg-12">
+        <div class="base_info">
+            第三方平台检测情况
+        </div>
+    </div>
+    <div class="col-lg-12 block">
+        <div class="col-lg-12 mar-top">
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">腾讯电脑管家检测结果:<p style="display:inline-block" id="tencent-res">安全性未知</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">检测日期:<p style="display:inline-block" id="tencent-time">2018/1/1 12:00</p></div>
+                        </div>
+                    </div>
+                    <div class="result_unknown" style="margin:10px 60px;" id="tencent-img">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">百度网址安全中心检测结果:<p style="display:inline-block" id="baidu-res">危险</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">检测日期:<p style="display:inline-block" id="baidu-time">2018/1/1 12:00</p></div>
+                        </div>
+                    </div>
+                    <div class="result_unknown" style="margin:10px 60px;" id="baidu-img">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">360网站检测结果:<p style="display:inline-block" id="sanliuling-res">高危</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">检测日期:<p style="display:inline-block" id="sanliuling-time">2018/1/1 12:00</p></div>
+                        </div>
+                    </div>
+                    <div class="result_unknown" style="margin:10px 60px;" id="sanliuling-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mar-top">
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">金山卫士检测结果:<p style="display:inline-block" id="jinshan-res">危险</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">检测日期:<p style="display:inline-block" id="jinshan-time">2018/1/1 12:00</p></div>
+                        </div>
+                    </div>
+                    <div class="result_unknown" style="margin:10px 60px;" id="jinshan-img">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">MacFree检测结果:<p style="display:inline-block" id="macfree-res">高度风险</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">检测日期:<p style="display:inline-block" id="macfree-time">2018/1/1 12:00</p></div>
+                        </div>
+                    </div>
+                    <div class="result_unknown" style="margin:10px 60px;" id="macfree-img">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">VirusTotal检测结果:<p style="display:inline-block" id="virustotal-res">1/61</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">检测日期:<p style="display:inline-block" id="virustotal-time">2018/1/1 12:00</p></div>
+                        </div>
+                    </div>
+                    <div class="result_unknown" style="margin:10px 60px;" id="virustotal-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="row base_info" >
+    <div class="col-lg-12">
+        <div class="base_info">
+            域名相关信息分析
+        </div>
+    </div>
+    <div class="col-lg-12 block">
+        <div class="row mar-top">
+            <div class="col-lg-12">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-11 tab-border" style="margin-left: 20px;">
+                    <ul id="myTab" class="nav nav-pills">
+                        <li class="active">
+                            <a href="#ip_analyse" data-toggle="tab">IP分析</a>
+                        </li>
+                        <li>
+                            <a href="#whois_analyse" data-toggle="tab">WHOIS分析</a>
+                        </li>
+                        <li>
+                            <a href="#icp_analyse" data-toggle="tab">ICP分析</a>
+                        </li>
+                        <li>
+                            <a href="#pos_analyse" data-toggle="tab">地理位置分析</a>
+                        </li>
+                        <li>
+                            <a href="#links_analyse" data-toggle="tab">链接分析</a>
+                        </li>
+                        <li>
+                            <a href="#content_analyse" data-toggle="tab">内容分析</a>
+                        </li>
+                        <li>
+                            <a href="#subdomain_analyse" data-toggle="tab">子域名分析</a>
+                        </li>
+                        <li>
+                            <a href="#Certificate_analyse" data-toggle="tab">证书分析</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mar-top" style="margin-top: 40px;">
+            <div class="col-lg-12">
+                <div class="tab-content">
+
+                    <div class="tab-pane fade in active" id="ip_analyse">
+                        <div class="col-lg-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-4" style="margin-let:40px;width:450px;">
+                                            为域名
+                                            <strong id="domain_ip">00000.in</strong>
+                                            提供过服务的IP数量:
+                                            <strong id="ip_num">25</strong>
+                                        </div>
+                                        <div class="col-xs-2" style="width:14%;">IP变换频率：</div>
+                                        <div class="col-xs-2 num-size" id="ip_change_freq">125次/1小时</div>
+                                        <div class="col-xs-2"><a id="ip_his_url" href="/ip_history">IP历史探测记录</a> </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="ip_analyse_table" class="table" style="width:100%;height:100%;">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div  style="padding-bottom:20px;">
+                                <button type="button" id="dns_show" onclick="show_dns_data()" class="btn btn-primary">点击查看DNS数据</button>
+                            </div>
+                            <div class="panel panel-info" id="dns_data" style="display:none;">
+                                <div class="panel-body">
+                                    <table class="table table-bordered" id="dns_cname">
+                                        <tbody>
+                                        <tr>
+                                            <td>CNAME记录</td>
+                                            <td>无数据</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-bordered" id="dns_ns">
+                                        <tbody>
+                                        <tr>
+                                            <td>NS记录</td>
+                                            <td>juming.dnsdun.net</td>
+                                            <td>juming.dnsdun.com</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-bordered" id="dns_txt">
+                                        <tbody>
+                                        <tr>
+                                            <td>TXT记录</td>
+                                            <td>无数据</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="row" style="padding-left:20px;"><h4>MX记录:</h4></div>
+                                    <table class="table table-bordered" id="dns_mx">
+                                        <thead>
+                                        <tr>
+                                            <th>优先级</th>
+                                            <th>交换域名</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>无数据</td>
+                                            <td>无数据</td>
+                                        </tr>
+                                        <!--<tr>-->
+                                            <!--<td>10</td>-->
+                                            <!--<td>in1-smtp.messagingengine.com</td>-->
+                                        <!--</tr>-->
+                                        </tbody>
+                                    </table>
+
+                                    <div class="row" style="padding-left:20px;"><h4>SOA记录:</h4></div>
+                                    <table class="table table-bordered" id="dns_soa">
+                                        <thead>
+                                        <tr>
+                                            <th>NS</th>
+                                            <th>负责人邮箱</th>
+                                            <th>序列号</th>
+                                            <th>刷新时间间隔</th>
+                                            <th>重试时间间隔</th>
+                                            <th>过期时间</th>
+                                            <th>生存时间</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>无数据</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="whois_analyse">
+                        <div class="col-lg-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <div class="row" style="margin-left: 100px;">
+                                        <div class="col-xs-3" style="width:220px;">注册人姓名关联域名数量:</div>
+                                        <div class="col-xs-2 num-size" id="reg_name_num">25</div>
+                                        <div class="col-xs-3" style="width:220px;">注册邮箱关联域名数量：</div>
+                                        <div class="col-xs-2 num-size" id="reg_email_num">125</div>
+                                    </div>
+                                    <div class="row" style="padding-top:5px;margin-left: 100px;">
+                                        <div class="col-xs-3" style="width:220px;">注册电话关联域名数量：</div>
+                                        <div class="col-xs-2 num-size" id="reg_phone_num">125次</div>
+                                        <div class="col-xs-3" style="width:220px;">域名注册生命周期：</div>
+                                        <div class="col-xs-3 num-size" id="live_period">1年</div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="whois_analyse_table" class="table" style="width:100%;height:100%;">
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="icp_analyse">
+                        <div class="col-lg-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-7 num-size" style="padding-left:20px;">分析结果类型:无ICP / 虚假ICP / 可疑ICP / 异常ICP / 正常ICP
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table" id="icp_analyse_table">
+                                        <thead>
+                                        <tr>
+                                            <th>域名</th>
+                                            <th>权威ICP备案</th>
+                                            <th>页面ICP</th>
+                                            <th>ICP备案判定结果</th>
+                                            <th>同页面ICP的其他域名数量</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pos_analyse">
+                        <div class="col-lg-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <li class="fa fa-group fa-fw"></li>
+                                    地理位置分析
+                                </div>
+                                <div class="panel-body">
+                                    <div id="geo-map" style="width:450px;height:300px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <li class="fa fa-group fa-fw"></li>
+                                    多源地理位置一致程度:<strong id="pos_level" style="padding-left:15px;">1</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table" id="pos_analyse_table">
+                                        <thead>
+                                        <tr>
+                                            <th>地理源</th>
+                                            <th>地理源数据</th>
+                                            <th>省份</th>
+                                            <th>详细地址</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="panel-body" style="border-top:1px solid #bce8f1;">
+                                    <table class="table" id="icp_pos_table">
+                                        <thead>
+                                        <tr>
+                                            <th>地理源</th>
+                                            <th>地理源数据</th>
+                                            <th>省份</th>
+                                            <th>详细地址</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="panel-body" style="border-top:1px solid #bce8f1;">
+                                    <table class="table" id="ip_pos_table">
+                                        <thead>
+                                        <tr>
+                                            <th>地理源</th>
+                                            <th>地理源数据</th>
+                                            <th>省份</th>
+                                            <th>详细地址</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="links_analyse">
+                        <div class="col-lg-4">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <li class="fa fa-group fa-fw"></li>
+                                    链接分析 <a id="links_link" href="/links_total">查看详情>>></a>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table" id="links_analyse_table">
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <li class="fa fa-group fa-fw"></li>
+                                    示意图
+                                </div>
+                                <div class="panel-body" id="links_fig" style="width: 580px; height: 330px;">
+                                    <div id="rate_fig" style="width:100%;height:100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="content_analyse">
+                        <div class="col-lg-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <li class="fa fa-group fa-fw"></li>
+                                    内容分析 <a id="content_his_url" href="/content_history">查看历史信息>>></a>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table" id="content_analyse_table">
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <li class="fa fa-group fa-fw"></li>
+                                    页面快照
+                                </div>
+                                <div class="panel-body">
+                                    <img id="snap" src="/static/images/detect_results/unknown.png" style="width:100%;height:300px;">
+                                    <!--<img id="snap" src="/static/images/shot_files/2018_1_12/14_7_1_gzta.com.png" style="width:100%;height:100%;">-->
+                                </div>
+                                <div id="outerdiv" style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
+                                    <div id="innerdiv" style="position:absolute;overflow:scroll;">
+                                        <img id="bigimg" style="border:5px solid #fff;" src=""/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade in active" id="subdomain_analyse">
+                        <div class="col-lg-12">
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade in active" id="Certificate_analyse">
+                        <div class="col-lg-12">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="row base_info" >
+    <div class="col-lg-12">
+        <div class="base_info">
+            关联分析
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-4" style="margin-left: 280px;">
+            <div><a id='visual' href="/visual">关联关系可视分析</a></div>
+        </div>
+        <div class="col-lg-4" style="">
+            <div><a id='group' href="/group"> 关联注册团伙分析</a></div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block scripts %}
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+<script src="https://cdn.bootcss.com/echarts/3.7.2/echarts.min.js"></script>
+<script src="{{ static_url("js/detect_results.js")}}"></script>
+<script src="{{ static_url("js/table.js")}}"></script>
+<script src="{{ static_url("js/china.js")}}"></script>
+<script src="{{ static_url("js/map.js")}}"></script>
+<script src="{{ static_url("js/chart.js")}}"></script>
+<script src="{{ static_url("js/analyse.js")}}"></script>
+<script src="{{ static_url("js/ajax.js")}}"></script>
+<script type="text/javascript">
+
+    /*点击图片，并显示弹出层及大图*/
+		$(function() {
+			$("#snap").click(function() {
+				var _this = $(this); //将当前的pimg元素作为_this传入函数
+				imgShow("#outerdiv", "#innerdiv", "#bigimg", _this);
+			});
+		});
+
+		function imgShow(outerdiv, innerdiv, bigimg, _this) {
+			var src = _this.attr("src");
+			$(bigimg).attr("src", src);
+
+			/*获取当前点击图片的真实大小，并显示弹出层及大图*/
+			$("<img/>").attr("src", src).load(function() {
+				var windowW = $(window).width();
+				var windowH = $(window).height();
+				var realWidth = this.width;
+				var realHeight = this.height;
+				var imgWidth, imgHeight;
+				var scale = 0.8;
+
+				if(realWidth > windowW * scale) {
+					imgWidth = windowW * scale;
+					imgHeight = imgWidth / realWidth * realHeight;
+				} else {
+					imgWidth = realWidth;
+					imgHeight = realHeight;
+				}
+				$(bigimg).css("width", imgWidth);
+
+				var w = (windowW - imgWidth) / 2;
+				var h = (windowH - imgHeight) / 2;
+				if(h<60){
+				    h = 60;
+				};
+				$(innerdiv).css({
+					"top": h,
+					"left": w,
+					"bottom":10
+				});
+				$(outerdiv).fadeIn("fast");
+			});
+
+			$(outerdiv).click(function() {
+				$(this).fadeOut("fast");
+			});
+		}
+
+    var results={% raw analyse_results %};
+    var domain = {% raw domain %};
+    var base_info = {% raw baseinfo %};
+    var detect_results={% raw detect_results %};
+    var cols = [
+        {
+            "data": "seq_num",
+            "title": "序号"
+        },
+        {
+            "data": "IP",
+            "title": "服务IP"
+        },
+        {
+            "data": "insert_time",
+            "title": "探测时间"
+        },
+        {
+            "data": "state80",
+            "title": "IP状态"
+        },
+        {
+            "data": "geo",
+            "title": "地理位置"
+        },
+        {
+            "data": "oper",
+            "title": "运营商"
+        },
+        {
+            "data": "ASN",
+            "title": "ASN"
+        },
+        {
+            "data": "AS_OWNER",
+            "title": "AS_OWNER"
+        }
+    ];
+    var data=results['table_info'];
+    var paras={
+        cols:cols,
+        table_id:'ip_analyse_table',
+        rows:500
+    };
+    paras['aoColumnDefs']= [{
+        "aTargets" :　[1],
+        "mRender" : function(data){
+            return "<a href='/illegal_orgs_query?ip="+data+"'>"+data+"</a>";
+        }
+    },{
+        "aTargets" :　[4],
+        "mRender" : function(data){
+            return "<a href='/keyinfo_query?source=pos&value="+data+"'>"+data+"</a>";
+        }
+    }
+    ];
+    var option={};
+    $('#domain').val(domain);
+    $('#domain_ip').text(domain);
+    $('#baseinfo_1').text(base_info[0]);
+    $('#baseinfo_2').text(base_info[1]);
+    $('#baseinfo_3').text(base_info[2]);
+    $('#baseinfo_4').text(base_info[3]);
+    $("#visual").attr("href","/visual?domain="+$('#domain').val());
+    $("#group").attr("href","/group?domain="+$('#domain').val());
+    set_detect_results(detect_results);
+    $('#ip_num').text(results['ip_num']);
+    $('#ip_change_freq').text(results['ip_change_frequency']);
+    showtable(data,paras);
+    $(document).ready(function(){
+        $("#btn_query").click(function(){
+            $("#visual").attr("href","/visual?domain="+$('#domain').val());
+            $("#group").attr("href","/group?domain="+$('#domain').val());
+            var url = "/all_analyse/data";
+            option['domain'] = $('#domain').val();
+            $('#domain_ip').text(option['domain']);
+            showData(url,option,paras,[add_all_analyse]);
+        });
+    });
+
+    $(function(){
+        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+            // 获取已激活的标签页的名称
+            var activeTab = $(e.target).text();
+            option['domain'] = $('#domain').val();
+            var paras = {};
+            if (activeTab=="WHOIS分析"){
+                var url="/whois_analyse/data";
+                paras['table_id'] = 'whois_analyse_table';
+                paras['domain'] = $('#domain').val();
+                $("#whois_analyse_table tbody").html("");
+                showData(url,option,paras,[add_whois_analyse]);
+            }else if (activeTab=="ICP分析"){
+                var url="/icp_analyse/data";
+                paras['table_id'] = 'icp_analyse_table';
+                $("#icp_analyse_table tbody").html("");
+                showData(url,option,paras,[add_table_rows]);
+            }else if (activeTab=="地理位置分析"){
+                var url="/pos_analyse/data";
+                paras['table_id'] = 'pos_analyse_table';
+                paras['map_id']='geo-map';
+                $("#pos_analyse_table tbody").html("");
+                showData(url,option,paras,[add_pos_analyse]);
+            }else if (activeTab=="链接分析"){
+                var url="/links_analyse/data";
+                paras['table_id'] = 'links_analyse_table';
+                $("#links_analyse_table tbody").html("");
+                paras['fig_id'] = 'links_fig';
+                showData(url,option,paras,[add_links_analyse]);
+                $("#links_link").attr("href","/links_total?domain="+$('#domain').val());
+            }else if (activeTab=="内容分析"){
+                var url = "/content_analyse/data";
+                paras['table_id'] = 'content_analyse_table';
+                $("#content_analyse_table tbody").html("");
+                paras['shot_id'] = 'snap';
+                showData(url,option,paras,[add_content_analyse]);
+
+                $("#content_his_url").attr("href","/content_history?domain="+$('#domain').val());
+
+            }else{
+                var url = "/ip_analyse/data";
+                paras['table_id'] = 'ip_analyse_table';
+                showData(url,option,paras,[add_ip_analyse]);
+
+                $("#ip_his_url").attr("href","/ip_history?domain="+$('#domain').val());
+            }
+        });
+    });
+
+    function show_dns_data(){
+        if($("#dns_data").css("display")=='none'){
+            $("#dns_data").css("display","block");
+        }
+        else{
+            $("#dns_data").css("display","none");
+        }
+    };
+</script>
+
+{% end %}

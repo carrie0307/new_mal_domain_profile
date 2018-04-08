@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block page %}
+
+<div class="row">
+    <div class="col-lg-12 header2">
+        <div class="col-lg-8">
+            <h3 style="display:inline-block">非法域名总量：<strong style="color:#F00">{{ results[0] }}</strong>个 &nbsp;&nbsp;&nbsp;<a href="/baseinfo"> 点击查看详情&gt;&gt;&gt; </a></h3>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <i class="fa fa-database fa-5x"></i>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <div><font size="5">{{ results[1] }}个</font></div>
+                        <div><font size="5">赌博类域名</font></div>
+                    </div>
+                </div>
+            </div>
+            <a href="/domain_type/all?type=Gamble">
+                <div class="panel-footer">
+                    <span class="pull-left"><a href="/baseinfo?source=gamble">查看详细</a></span>
+                    <span class="pull-right text-primary"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-female fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div><font size="5">{{ results[2] }}个</font></div>
+                        <div><font size="5">色情类域名</font></div>
+                    </div>
+                </div>
+            </div>
+            <a href="/domain_type/all?type=Porno">
+                <div class="panel-footer">
+                    <span class="pull-left text-primary"><a href="/baseinfo?source=porno">查看详细</a></span>
+                    <span class="pull-right text-primary"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-ban fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div><font size="5">0个</font></div>
+                        <div><font size="5">毒品类域名</font></div>
+                    </div>
+                </div>
+            </div>
+            <a href="/">
+                <div class="panel-footer">
+                    <span class="pull-left text-primary">查看详细</span>
+                    <span class="pull-right text-primary"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-bug fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div><font size="5">0个</font></div>
+                        <div><font size="5">钓鱼网站类域名</font></div>
+                    </div>
+                </div>
+            </div>
+            <a href="/">
+                <div class="panel-footer">
+                    <span class="pull-left text-primary">查看详细</span>
+                    <span class="pull-right text-primary"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-comment-o fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div><font size="5">0个</font></div>
+                        <div><font size="5">诈骗类域名</font></div>
+                    </div>
+                </div>
+            </div>
+            <a href="/">
+                <div class="panel-footer">
+                    <span class="pull-left text-primary">查看详细</span>
+                    <span class="pull-right text-primary"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-bomb fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div><font size="5">0个</font></div>
+                        <div><font size="5">枪支弹药类域名</font></div>
+                    </div>
+                </div>
+            </div>
+            <a href="/">
+                <div class="panel-footer">
+                    <span class="pull-left text-primary">查看详细</span>
+                    <span class="pull-right text-primary"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-warning fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div><font size="5">0个</font></div>
+                        <div><font size="5">BK类域名</font></div>
+                    </div>
+                </div>
+            </div>
+            <a href="/">
+                <div class="panel-footer">
+                    <span class="pull-left text-primary">查看详细</span>
+                    <span class="pull-right text-primary"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-comment fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div><font size="5">0个</font></div>
+                        <div><font size="5">非法政治言论类域名</font></div>
+                    </div>
+                </div>
+            </div>
+            <a href="/">
+                <div class="panel-footer">
+                    <span class="pull-left text-primary">查看详细</span>
+                    <span class="pull-right text-primary"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<!--地图-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <li class="fa fa-group fa-fw"></li>
+                <strong>非法域名WHOIS注册地理的地理分布</strong> &nbsp;&nbsp;&nbsp;
+                <a href="/pos_statistics?source=reg_whois"> <<< 查看其他地理源信息分布 </a>&nbsp;&nbsp;&nbsp;
+                <a href="/keyinfo_query?source=pos&value=北京"> 查看详细地理信息 &gt;&gt;&gt;</a>
+            </div>
+            <div class="panel-body">
+                <div id="map_container" style="width:100%;height:500px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block scripts %}
+<script src="https://cdn.bootcss.com/echarts/3.7.2/echarts.min.js"></script>
+<script src="{{ static_url("js/map.js")}}"></script>
+<script src="{{ static_url("js/ajax.js")}}"></script>
+<script src="{{ static_url("js/china.js")}}"></script>
+<script type="text/javascript">
+    var map_id = "map_container";
+    var map_url = '/pos_statistics/pos_data';
+    var parameter = {
+        map_id:map_id,
+        map_data_idx:0
+    };
+    var option = {
+        source :'reg_whois'
+    };
+    //异步加载
+    showData(map_url,option,parameter,[showmap]);
+</script>
+{% end %}
