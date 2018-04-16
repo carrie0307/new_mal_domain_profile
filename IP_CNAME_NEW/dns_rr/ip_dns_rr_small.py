@@ -107,12 +107,14 @@ def get_cname_ip(ns_ips,fqdn_domain,resolver,dns_message):
             cname_tmp_msg = 'CNAME Exception msg:Timeout'
         except:
             cname_tmp_msg = 'CNAME Exception msg:Unexcepted Errors'
-            
+
         if not cnames:
             try:
                 resp_A = resolver.query(fqdn_domain, 'A')
                 answers= [answer.to_text() for answer in resp_A.response.answer]
                 ips.extend(get_rr_content(answers))
+                print 'ns:', ns_ip
+                print '--------------'
                 break
             except dns.resolver.NoAnswer, e:
                 ip_tmp_msg = 'A Exception msg:NoAnswer'
@@ -184,6 +186,6 @@ if __name__ == '__main__':
     # for _ in range(5):
     g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx, dns_message= [],[],[],[],[],[],[]
     # fetch_rc_ttl('www.000-078-japan.com', g_ns, g_ips, g_cnames)
-    get_complete_dns_rr('www.00000040.com', g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx,dns_message)
+    get_complete_dns_rr('www.088500.com', g_ns, g_ips, g_cnames,dns_message)
     print g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx,dns_message
     print '\n'

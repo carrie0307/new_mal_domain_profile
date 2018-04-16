@@ -32,8 +32,9 @@ class PosLocate(Base):
             sql = "select b." + source + "_province,a.dm_type as maltype,count(*) as num from domain_general_list a join domain_locate b on a.domain = b.domain " \
                                          "  where b." + source + "_country='中国' and length(" + source + "_province)!=CHAR_LENGTH(" + source + "_province) group by b." + source + "_province,a.dm_type"
         elif source == 'icp':
-            sql = "select b." + source + "_province,a.dm_type as maltype,count(*) as num from domain_general_list a join domain_locate b on a.domain = b.domain " \
-                                         "  where  length(" + source + "_province)!=CHAR_LENGTH(" + source + "_province) group by b." + source + "_province,a.dm_type"
+            sql = "select b." + source + "_province,a.dm_type as maltype,count(*) as num from domain_general_list a join domain_icp b on a.domain = b.domain " \
+                " where  length(" + source + "_province)!=CHAR_LENGTH(" + source + "_province) group by b." + source + "_province,a.dm_type"
+
         elif source == 'ip':
             sql = "select ip_province,maltype,count(*) as num from domain_ip_relationship " \
                   " where ip_country='中国' and length(ip_province)!=CHAR_LENGTH(ip_province) group by ip_province,maltype"
@@ -41,12 +42,15 @@ class PosLocate(Base):
             print "无该项查询"
             return []
         sql = sql+' limit 100'
+        print sql
         res = self.mysql_db.query(sql)
+
         if len(res) != 0:
             results1 = {}
-
+            print results1.keys()
             for rs in res:
                 if not results1.has_key(rs[source + '_province']):
+                # if not results1.has_key(rs[source + '_province']):
                     results1[rs[source + '_province']] = {}
                 results1[rs[source + '_province']][rs['maltype']] = rs['num']
 
@@ -163,10 +167,10 @@ class PosLocate(Base):
               "  from domain_locate where domain = %s "
         res = self.mysql_db.get(sql, domain)
         # 获取icp地理位置信息
-        sql = "select auth_icp,auth_icp_locate,page_icp,page_icp_locate from domain_icp where domain=%s"
+        sql = "select auth_icp,icp_province,page_icp,page_icp_locate from domain_icp where domain=%s"
         res2 = self.mysql_db.get(sql, domain)
         res['auth_icp'] = res2['auth_icp']
-        res['auth_icp_province'] = res2['auth_icp_locate']
+        res['auth_icp_province'] = res2['icp_province']
         res['page_icp'] = res2['page_icp']
         res['page_icp_province'] = res2['page_icp_locate']
 
@@ -276,4 +280,3 @@ if __name__ == "__main__":
     #                 result.append(row)
     # print "lallal"
     # print result
-

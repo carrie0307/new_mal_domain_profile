@@ -183,7 +183,6 @@ def get_page_icp(html):
         else:
             pattern2 = re.compile(u'([\u4e00-\u9fa5]{0,1}ICP[\u8bc1]{0,1} *?[\d]{6,8}[\u53f7]*-*[\d]*)').findall(html)
             # pattern2 = re.compile(u'([\u4e00-\u9fa5]{0,1}ICP[\u8bc1]{0,1}.*?[\d]{6,8}[\u53f7]*-*[\d]*)').findall(html)
-            print '2:', pattern2
             if pattern2 != []:
                 icp = pattern2[0]
             # 增值业务营业号

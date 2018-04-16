@@ -100,6 +100,7 @@ class QueryDetectResut(Base):
             else:
                 single_result['detect_type'] = "待检测"
                 single_result['detect_result'] = "检测结果未知"
+                print "新类型，重新区分/还未检测"
         elif default_type == 'virustotal':
             single_result['detect_time'] = str(single_result['vt_it'])
             del single_result['vt_it']
@@ -108,7 +109,9 @@ class QueryDetectResut(Base):
             if result is None:
                 single_result['detect_result'] = "检测结果未知"
                 single_result['detect_type'] = "待检测"
+                print "新类型，重新区分/还未检测"
             else:
+                print result
                 result = eval(result)
                 single_result['detect_result'] = str(result['malicious rate'])
                 if str(result['malicious rate'])[0]!="0":
@@ -221,7 +224,9 @@ class QueryDetectResut(Base):
                   " from detect_results where domain=%s"
 
         result = self.mysql_db.get(sql,domain)
-
+        for key in result:
+            if not result[key] and key != 'vt_rs' and key != 'vt_it':
+                result[key] = '---'
         converted_result = QueryDetectResut.convert_shape(result,default_type)
 
         return converted_result
@@ -229,6 +234,7 @@ class QueryDetectResut(Base):
 if __name__ == "__main__":
     qr = QueryDetectResut()
     # print qr.get_detect_results('0-360c.com','tencent')
+    print qr.get_detect_results('vns36066.com','virustotal')
     # print qr.get_detect_results('0-360c.com', 'baidu')
     # print qr.get_detect_results('0-360c.com', 'sanliuling')
     # print qr.get_detect_results('0-360c.com', 'jinshan')

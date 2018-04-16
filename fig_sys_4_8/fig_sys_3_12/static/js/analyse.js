@@ -60,7 +60,7 @@ function add_content_analyse(data,paras){
 
 function add_ip_analyse(data,paras){
     $('#ip_num').text(data['ip_num']);
-    $('#ip_change_freq').text(data['ip_change_frequency']);
+    $('#ip_change_freq').text(data['change_frequency']);
     showtable(data['table_info'],paras);
 
 //    CNAME记录

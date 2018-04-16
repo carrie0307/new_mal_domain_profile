@@ -52,9 +52,9 @@ class QueryDomainGeneralInfo(Base):
             sql = sql + limit_num
             res = self.mysql_db.query(sql, source_value)
         elif source == 'pos':
-            sql1 = "select dg.* from domain_general_list dg join domain_locate dw on dg.domain=dw.domain " \
-                  " where dw.reg_whois_province = '%s' or dw.reg_phone_province = '%s' or dw.reg_postal_province = '%s' or "\
-                  " dw.ICP_province = '%s' "%(source_value,source_value,source_value,source_value)
+            sql1 = "select dg.* from domain_general_list dg, domain_locate dw, domain_icp d_icp\
+                    where (dw.reg_whois_province = '%s' or dw.reg_phone_province = '%s' or dw.reg_postal_province = '%s'\
+                    or d_icp.icp_province = '%s') and (dg.domain = dw.domain and dw.domain = d_icp.domain)" %(source_value,source_value,source_value,source_value)
             sql2 = "select a.* from domain_general_list a join domain_ip_relationship b on a.domain = b.domain" \
                   " where b.ip_province = %s"
             if maltype:
@@ -125,11 +125,11 @@ class QueryDomainGeneralInfo(Base):
 if __name__ == "__main__":
     qdg = QueryDomainGeneralInfo()
     # print qdg.get_general_list()
-    # print qdg.get_general_list(source='reg_name',source_value='yangbo')
+    print qdg.get_general_list(source='reg_name',source_value='yangbo')
     # print qdg.get_general_list(source='reg_email', source_value='5343@163.com')
     # print qdg.get_general_list(source='reg_phone', source_value='+86.13811119831')
     # print qdg.get_general_list(source='sponsoring_registrar', source_value='1API GmbH')
     # print qdg.get_general_list(source='ip', source_value='52.73.207.56')
     # print qdg.get_general_list(source='sponsoring_registrar', source_value='1API GmbH',maltype="非法赌博")
     # print QueryDomainGeneralInfo().get_baseinfo_bydomain('000000.in')
-    print QueryDomainGeneralInfo().get_baseinfo_bydomain('0000779.com')
+    # print QueryDomainGeneralInfo().get_baseinfo_bydomain('0000779.com')

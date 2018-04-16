@@ -29,7 +29,7 @@ def get_ips():
     '''
     global ip_q
 
-    sql = "SELECT IP FROM ip_general_list LIMIT 10;"
+    sql = "SELECT IP FROM ip_general_list;"
     fetch_data = mysql_conn.exec_readsql(sql)
     for item in fetch_data:
         ip = item[0]
