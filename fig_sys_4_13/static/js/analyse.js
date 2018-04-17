@@ -191,3 +191,74 @@ function deal_ip_history(data,paras){
         $("#timeline").html(html_total);
     }
 }
+
+function deal_content_history(data, paras){
+
+    $(".date").html("");
+
+	if(data==""){
+        var html_none = '<li><div class="block_list"><h3>无数据</h3><span class="circle"></span><span class="square"></span></div></li>';
+        $("#timeline").html(html_none);
+    }
+	else{
+		var data_len = data.length;
+        var html_total = "";
+        for (var i=0; i < data_len; i++){
+            var analyse_results = data[i]['analyse_results'];
+//            var shot_path = data[i]['shot_path'];
+            var shot_path = 'background.jpg';
+
+            var content_html = '';
+            for(var j=0; j<analyse_results.length; j++){
+            		var html = '<tr><td>'+ analyse_results[j][0] + '</td>'
+            					+ '<td>' + analyse_results[j][1] + '</td></tr>';
+            		content_html = content_html + html;
+            }
+
+            var table_html = '<li><div class="block_list"><h3>内容信息</h3>'
+            					+ '<table class="table table-bordered content-table">' + content_html + '</table>'
+            					+ '<h3>快照</h3><table class="table table-bordered content-table"><tr><td><img src="/static/images/' + shot_path + '" style="width: 750px;height: 400px;"></td></tr> </table>'
+            					+ '<span class="date">' + analyse_results[1][1] + '</span>'
+							    + '<span class="circle"></span><span class="square"></span>'
+            					+ '</div></li>';
+
+            html_total = html_total + table_html;
+        }
+        $("#timeline").html(html_total);
+	}
+}
+
+function deal_sub_rows(data,table_id){
+    $(table_id).html("");
+	htmls = ''
+	if(data){
+	    for (var i=0; i<data.length; i++){
+	        html = '<tr><td>' + data[i] + '</td></tr>';
+	        htmls = htmls + html;
+	    }
+	}
+	else{
+	    htmls = '<tr><td>无数据</td></tr>';
+	}
+	$(table_id).html(htmls);
+}
+
+function add_sub_domain(data, paras){
+
+    $("#total_num").html("子域名总数量为 " + data['sub_sum']);
+	$("#sub3_num").html("三级子域名数量: " + data['three_level_sub']['num']);
+	$("#sub4_num").html("四级子域名数量: " + data['four_level_sub']['num']);
+	$("#sub5_num").html("五级子域名数量: " + data['five_level_sub']['num']);
+	$("#sub6_num").html("六级子域名数量: " + data['six_level_sub']['num']);
+
+	data_3 = data['three_level_sub']['dm_set'];
+	data_4 = data['four_level_sub']['dm_set'];
+	data_5 = data['five_level_sub']['dm_set'];
+	data_6 = data['six_level_sub']['dm_set'];
+
+	deal_sub_rows(data_3,"#sub3_table");
+	deal_sub_rows(data_4,"#sub4_table");
+	deal_sub_rows(data_5,"#sub5_table");
+	deal_sub_rows(data_6,"#sub6_table");
+
+}

@@ -27,7 +27,7 @@ class QueryWebResults(Base):
         result = dict(
             title=self.None_to_empty(res.get('top_title')),
             meta =self.None_to_empty(res.get('meta')),
-            redirect_domain=self.None_to_empty(res.get('current_url')),
+            cur_url=self.None_to_empty(res.get('current_url')),
             shot_path=self.None_to_empty(res.get('shot_path')),
             detect_time=str(self.None_to_empty(res.get('cur_time')))
         )
@@ -49,27 +49,26 @@ class QueryWebResults(Base):
             title:页面标题,
             keywords:页面关键词,
             description:页面描述,
-            redirect_domain:重定向域名,
+            cur_url:重定向域名,
             shot_path:页面快照路径,
             detect_time:检测时间,
             flag:页面是否成功获取
             }
             历史记录:[row,row,row,...,row]#由最新探测记录,...,首次探测记录
         """
-        domain_web_table = self.mongo_db.domain_web
+        domain_web_table = self.mongo_db.web_info_table
         if query_all:
             res = domain_web_table.find_one(
                 {'domain': domain},
                 {
-                    'content': 1,
+                    'row': 1,
                     '_id':0
                 }
             )
-            content = res['content']
+            content = res['row']
             results = []
-            if len(content)!=0:
-                for elem in reversed(content):
-                    results.append(self.convert_shape(elem))
+            for elem in reversed(content):
+                results.append(self.convert_shape(elem))
 
             return results
         else:
@@ -222,30 +221,36 @@ class QueryWebResults(Base):
 
 if __name__ == "__main__":
     qw = QueryWebResults()
-    print qw.get_web_baseinfo('277488.com',query_all=False)
+    res = qw.get_web_baseinfo('000033333.com',query_all=True)
+    print res
+    for rs in res:
+        print rs
+
     # print qw.get_web_baseinfo('277488.com',query_all=True)
     # print qw.get_links_baseinfo('000000.com')
-    # content_analyse_results = QueryWebResults().get_web_baseinfo('000000.com', query_all=False)
-    # if content_analyse_results['shot_path'] is not None and content_analyse_results['shot_path'] != '':
-    #     shot_result = "获取成功"
-    # else:
-    #     shot_result = "获取失败"
-    # if content_analyse_results['redirect_domain'] is not None and content_analyse_results['redirect_domain'] != '':
-    #     analyse_results = [
-    #         ["页面标题", content_analyse_results['title']],
-    #         ["页面关键词", content_analyse_results['keywords']],
-    #         ["重定向域名", content_analyse_results['redirect_domain']],
-    #         ["页面描述", content_analyse_results['description']],
-    #         ["快照获取", shot_result],
-    #         ["探测时间", content_analyse_results['detect_time']],
-    #     ]
-    # else:
-    #     analyse_results = [
-    #         ["页面标题", content_analyse_results['title']],
-    #         ["页面关键词", content_analyse_results['keywords']],
-    #         ["页面描述", content_analyse_results['description']],
-    #         ["快照获取", shot_result],
-    #         ["探测时间", content_analyse_results['detect_time']],
-    #     ]
-    # shot_path = content_analyse_results['shot_path']
-    # print analyse_results
+
+    # content_analyse = QueryWebResults().get_web_baseinfo('000033333.com', query_all=True)
+    # print content_analyse
+    # results = []
+    # result = {}
+    # for content_analyse_results in content_analyse:
+    #     if content_analyse_results['cur_url'] is not None and content_analyse_results['cur_url'] != '':
+    #         analyse_results = [
+    #             ["页面标题", content_analyse_results['title']],
+    #             ["重定向域名", content_analyse_results['cur_url']],
+    #             ["页面描述", content_analyse_results['meta']],
+    #             ["探测时间", content_analyse_results['detect_time']],
+    #         ]
+    #     else:
+    #         analyse_results = [
+    #             ["页面标题", content_analyse_results['title']],
+    #             ["页面描述", content_analyse_results['meta']],
+    #             ["探测时间", content_analyse_results['detect_time']],
+    #         ]
+    #     shot_path = content_analyse_results['shot_path']
+    #     result = {
+    #         "analyse_results":analyse_results,
+    #         "shot_path":shot_path
+    #     }
+    #     results.append(result)
+    # print results

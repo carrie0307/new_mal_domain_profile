@@ -7,6 +7,7 @@ import tornado.web
 import json
 from base_handler import BaseHandler
 from models.get_ip_history import IP_history
+from models.web_results import QueryWebResults
 
 default_domain = '000033333.com'
 class IPHistoryHandler(BaseHandler):
@@ -46,14 +47,39 @@ class WhoisHistoryHandler(BaseHandler):
         )
 
 class ContentHistoryHandler(BaseHandler):
-    """IP历史状态探测控制"""
+    """页面内容历史控制"""
 
     @tornado.web.authenticated
     def get(self):
 
         self.get_authenticated()
         domain = self.get_argument('domain', default_domain)
+        data = QueryWebResults().get_web_baseinfo(domain, query_all=True)
+        results = []
+        for content_analyse_results in data:
+            if content_analyse_results['cur_url'] is not None and content_analyse_results['cur_url'] != '':
+                analyse_results = [
+                    ["页面标题", content_analyse_results['title']],
+                    ["探测时间", content_analyse_results['detect_time']],
+                    ["重定向域名", content_analyse_results['cur_url']],
+                    ["页面描述", content_analyse_results['meta']],
+                ]
+            else:
+                analyse_results = [
+                    ["页面标题", content_analyse_results['title']],
+                    ["探测时间", content_analyse_results['detect_time']],
+                    ["页面描述", content_analyse_results['meta']],
+                ]
+            shot_path = content_analyse_results['shot_path']
+            result = {
+                "analyse_results": analyse_results,
+                "shot_path": shot_path
+            }
+            results.append(result)
+
+        results = json.dumps(results)
         self.render(
             'content_history.html',
             domain = json.dumps(domain),
+            res = results
         )

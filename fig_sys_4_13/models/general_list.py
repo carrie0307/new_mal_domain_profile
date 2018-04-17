@@ -110,6 +110,10 @@ class QueryDomainGeneralInfo(Base):
         limit_num = ' limit 100'
         sql = "select domain,dm_type,http_code,update_time from domain_general_list where domain=%s"+limit_num
         result = self.mysql_db.get(sql, domain)
+
+        print result
+        print "lallalalallal=--------"
+
         result['update_time'] = str(result['update_time'])
         if (isinstance(result['http_code'], unicode) or isinstance(result['http_code'], str))and result['http_code'] != '':
             if result['http_code'][0]=='2':
@@ -125,7 +129,7 @@ class QueryDomainGeneralInfo(Base):
 if __name__ == "__main__":
     qdg = QueryDomainGeneralInfo()
     # print qdg.get_general_list()
-    print qdg.get_general_list(source='reg_name',source_value='yangbo')
+    # print qdg.get_general_list(source='reg_name',source_value='yangbo')
     # print qdg.get_general_list(source='reg_email', source_value='5343@163.com')
     # print qdg.get_general_list(source='reg_phone', source_value='+86.13811119831')
     # print qdg.get_general_list(source='sponsoring_registrar', source_value='1API GmbH')
@@ -133,3 +137,4 @@ if __name__ == "__main__":
     # print qdg.get_general_list(source='sponsoring_registrar', source_value='1API GmbH',maltype="非法赌博")
     # print QueryDomainGeneralInfo().get_baseinfo_bydomain('000000.in')
     # print QueryDomainGeneralInfo().get_baseinfo_bydomain('0000779.com')
+    print QueryDomainGeneralInfo().get_baseinfo_bydomain('0371tk.com')

@@ -12,20 +12,13 @@ from models.analyse import IP_data_getter,Whois_info_getter,ICP_data_getter
 from models.pos_locate import PosLocate
 from models.web_results import QueryWebResults
 from models.get_ip_new import newIP_data_getter
+from models.get_sub_domain import QuerySubDomains
 
 
 default_domain = '000033333.com'
-class DomainFigureHandler(BaseHandler):
-    """域名画像控制"""
 
-    @tornado.web.authenticated
-    def get(self):
-
-        self.get_authenticated()
-        domain = self.get_argument('domain',default_domain)
-        baseinfo = QueryDomainGeneralInfo().get_baseinfo_bydomain(domain)
-        baseinfo =  [baseinfo['domain'],baseinfo['dm_type'],baseinfo['http_code'],baseinfo['update_time']]
-        detect_results = QueryDetectResut().get_detect_results(domain)
+class IPWhoisDeal():
+    def whois_deal(self, domain):
         ip_analyse_results = newIP_data_getter(domain).get_data()
         other_res = ip_analyse_results['other_dns_rr']
         CNAME = other_res['cname']
@@ -52,8 +45,6 @@ class DomainFigureHandler(BaseHandler):
                 MX_results.append(res)
             ip_analyse_results['other_dns_rr']['mx'] = MX_results
 
-
-
         SOA = other_res['soa']
 
         if SOA:
@@ -64,7 +55,21 @@ class DomainFigureHandler(BaseHandler):
                 res = [value for value in soa.values()]
                 SOA_results.append(res)
             ip_analyse_results['other_dns_rr']['soa'] = SOA_results
-        # ip_analyse_results = IP_data_getter(domain).get_ip_info()
+
+        return ip_analyse_results
+
+class DomainFigureHandler(BaseHandler):
+    """域名画像控制"""
+
+    @tornado.web.authenticated
+    def get(self):
+
+        self.get_authenticated()
+        domain = self.get_argument('domain',default_domain)
+        baseinfo = QueryDomainGeneralInfo().get_baseinfo_bydomain(domain)
+        baseinfo =  [baseinfo['domain'],baseinfo['dm_type'],baseinfo['http_code'],baseinfo['update_time']]
+        detect_results = QueryDetectResut().get_detect_results(domain)
+        ip_analyse_results = IPWhoisDeal().whois_deal(domain)
         self.render(
             'domain_figure.html',
             domain=json.dumps(domain),
@@ -83,44 +88,7 @@ class ALLAnalyseDataHandler(BaseHandler):
         baseinfo = QueryDomainGeneralInfo().get_baseinfo_bydomain(domain)
         baseinfo =  [baseinfo['domain'],baseinfo['dm_type'],baseinfo['http_code'],baseinfo['update_time']]
         detect_results = QueryDetectResut().get_detect_results(domain)
-        ip_analyse_results = newIP_data_getter(domain).get_data()
-        other_res = ip_analyse_results['other_dns_rr']
-        CNAME = other_res['cname']
-        if CNAME:
-            CNAME.insert(0, "CNAME记录1")
-            ip_analyse_results['other_dns_rr']['cname'] = [CNAME]
-
-        NS = other_res['ns']
-        if NS:
-            NS.insert(0, "NS记录1")
-            ip_analyse_results['other_dns_rr']['ns'] = [NS]
-
-        TXT = other_res['txt']
-        if TXT:
-            TXT.insert(0, "TXT记录1")
-            ip_analyse_results['other_dns_rr']['txt'] = [TXT]
-
-        MX = other_res['mx']
-        if MX:
-            # MX_results = [['优先级', '交换域名']]
-            MX_results = []
-            for ms in MX:
-                res = [value for value in ms.values()]
-                MX_results.append(res)
-            ip_analyse_results['other_dns_rr']['mx'] = MX_results
-
-
-
-        SOA = other_res['soa']
-
-        if SOA:
-            # SOA_results = [['NS','负责人邮箱','序列号','刷新时间间隔','重试时间间隔','过期时间','生存时间']]
-            # SOA_results = [['负责人邮箱', '重试时间间隔', 'NS', '生存时间', '刷新时间间隔', '过期时间', '序列号']]
-            SOA_results = []
-            for soa in SOA:
-                res = [value for value in soa.values()]
-                SOA_results.append(res)
-            ip_analyse_results['other_dns_rr']['soa'] = SOA_results
+        ip_analyse_results = IPWhoisDeal().whois_deal(domain)
         analyse_results=dict(
             baseinfo=baseinfo,
             detect_results=detect_results,
@@ -161,47 +129,7 @@ class IPAnalyseDataHandler(BaseHandler):
 
         self.get_authenticated()
         domain = self.get_argument('domain',default_domain)
-        # ip_analyse_results = IP_data_getter(domain).get_ip_info()
-        ip_analyse_results = newIP_data_getter(domain).get_data()
-        other_res = ip_analyse_results['other_dns_rr']
-        CNAME = other_res['cname']
-        if CNAME:
-            CNAME.insert(0, "CNAME记录1")
-            ip_analyse_results['other_dns_rr']['cname'] = [CNAME]
-
-        NS = other_res['ns']
-        if NS:
-            NS.insert(0, "NS记录1")
-            ip_analyse_results['other_dns_rr']['ns'] = [NS]
-
-        TXT = other_res['txt']
-        if TXT:
-            TXT.insert(0, "TXT记录1")
-            ip_analyse_results['other_dns_rr']['txt'] = [TXT]
-
-        MX = other_res['mx']
-        if MX:
-            # MX_results = [['优先级', '交换域名']]
-            MX_results = []
-            for ms in MX:
-                res = [value for value in ms.values()]
-                MX_results.append(res)
-            ip_analyse_results['other_dns_rr']['mx'] = MX_results
-
-
-
-        SOA = other_res['soa']
-
-        if SOA:
-            # SOA_results = [['NS','负责人邮箱','序列号','刷新时间间隔','重试时间间隔','过期时间','生存时间']]
-            # SOA_results = [['负责人邮箱', '重试时间间隔', 'NS', '生存时间', '刷新时间间隔', '过期时间', '序列号']]
-            SOA_results = []
-            for soa in SOA:
-                res = [value for value in soa.values()]
-                SOA_results.append(res)
-            ip_analyse_results['other_dns_rr']['soa'] = SOA_results
-
-
+        ip_analyse_results = IPWhoisDeal().whois_deal(domain)
         self.write(json.dumps(ip_analyse_results))
 
 class ICPAnalyseDataHandler(BaseHandler):
@@ -331,10 +259,18 @@ class ContentAnalyseDataHandler(BaseHandler):
         content_analyse_results = QueryWebResults().get_web_baseinfo(domain,query_all=False)
         analyse_results = [
             ["页面标题", content_analyse_results['title']],
-            ["重定向域名", content_analyse_results['redirect_domain']],
+            ["重定向域名", content_analyse_results['cur_url']],
             ["页面描述", content_analyse_results['meta']],
             ["探测时间", content_analyse_results['detect_time']],
         ]
         shot_path = content_analyse_results['shot_path']
 
         self.write(json.dumps([analyse_results,shot_path]))
+
+class SubDomainDataHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.get_authenticated()
+        domain = self.get_argument('domain', default_domain)
+        result = QuerySubDomains().get_subdomainsinfo(domain)
+        self.write(json.dumps(result))

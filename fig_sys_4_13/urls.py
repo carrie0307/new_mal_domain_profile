@@ -22,7 +22,7 @@ from handlers.key_statistic import KeyStatisticsViewDataHandler
 from handlers.baseinfo import DoaminGeneralHandler
 #域名画像查询
 from handlers.domain_figure import DomainFigureHandler
-from handlers.domain_figure import ICPAnalyseDataHandler,IPAnalyseDataHandler,WHOISAnalyseDataHandler
+from handlers.domain_figure import ICPAnalyseDataHandler,IPAnalyseDataHandler,WHOISAnalyseDataHandler,SubDomainDataHandler
 from handlers.domain_figure import PosAnalyseDataHandler,LinksAnalyseDataHandler,ContentAnalyseDataHandler,ALLAnalyseDataHandler
 #团伙分析
 from handlers.IllegalOrgsHandler import IllegalOrgsHandler
@@ -60,6 +60,7 @@ urls = [
     (r'/pos_analyse/data', PosAnalyseDataHandler),
     (r'/links_analyse/data', LinksAnalyseDataHandler),
     (r'/content_analyse/data', ContentAnalyseDataHandler),
+    (r'/sub_domain/data', SubDomainDataHandler),
     (r'/all_analyse/data', ALLAnalyseDataHandler),
     # 非法域名关键信息总表预览控制
     (r'/keyinfo_general_list', KeyStatisticsGeneralHandler),#总览
