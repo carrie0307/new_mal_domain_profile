@@ -4,7 +4,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
-mongo_conn = database.mongo_operation.MongoConn('10.245.146.38','illegal_domains_profile')
+mongo_conn = database.mongo_operation.MongoConn('10.245.146.37','illegal_domains_profile')
 collection_name = 'domain_dns_rr_small'
 
 

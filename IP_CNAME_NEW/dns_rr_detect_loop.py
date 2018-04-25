@@ -8,8 +8,8 @@ import database.mongo_operation
 import database.mysql_operation
 reload(sys)
 sys.setdefaultencoding('utf-8')
-mongo_conn = database.mongo_operation.MongoConn('10.245.146.38','illegal_domains_profile')
-mysql_conn = database.mysql_operation.MysqlConn('10.245.146.38','root','platform','illegal_domains_profile','utf8')
+mongo_conn = database.mongo_operation.MongoConn('10.245.146.37','illegal_domains_profile')
+mysql_conn = database.mysql_operation.MysqlConn('10.245.146.37','root','platform','illegal_domains_profile','utf8')
 import datetime
 import schedule
 

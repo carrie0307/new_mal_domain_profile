@@ -16,6 +16,8 @@ import ip2region.ip2Region
 import ip2region.exec_ip2reg
 searcher = ip2region.ip2Region.Ip2Region("ip2region/ip2region.db")
 
+counter = 0
+
 
 def get_domains():
     '''
@@ -23,7 +25,7 @@ def get_domains():
     :return: [(ip,domain), (ip,domain), ...]
     '''
     domain_ip_list = []
-    sql = "SELECT ip,domain FROM ip_reverse_new;"
+    sql = "SELECT ip,domain FROM ip_reverse_new WHERE ip_detail = '';"
     fetch_data =list(mysql_conn.exec_readsql(sql))
     for item in fetch_data:
         domain_ip_list.append(item)
@@ -85,10 +87,16 @@ def save_info(domain,ip_details,ip_cmp_flag,ip_geo_info):
     '''
     功能： 存储
     '''
+    global counter
     sql = "UPDATE ip_reverse_new SET ip_detail = '%s',flag = %d, ip_geo_info = '%s'\
            WHERE domain = '%s';" %(ip_details,ip_cmp_flag,ip_geo_info, domain)
-    mysql_conn.exec_cudsql(sql)
-    mysql_conn.commit()
+    exec_res = mysql_conn.exec_cudsql(sql)
+    if exec_res:
+        counter += 1
+        # print "counter : " + str(counter)
+        if counter == 100:
+            mysql_conn.commit()
+            counter = 0
 
 
 if __name__ == '__main__':
@@ -111,3 +119,4 @@ if __name__ == '__main__':
         ip_details = ';'.join(ip_details)
         print domain,ip_details,ip_cmp_flag,ip_geo_info
         save_info(domain,ip_details,ip_cmp_flag,ip_geo_info)
+    mysql_conn.commit()

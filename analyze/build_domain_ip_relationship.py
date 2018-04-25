@@ -20,8 +20,8 @@ sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 import database.mysql_operation
-mongo_conn = database.mongo_operation.MongoConn('10.245.146.38','illegal_domains_profile')
-mysql_conn = database.mysql_operation.MysqlConn('10.245.146.38','root','platform','illegal_domains_profile_analysis','utf8')
+mongo_conn = database.mongo_operation.MongoConn('10.245.146.37','illegal_domains_profile')
+mysql_conn = database.mysql_operation.MysqlConn('10.245.146.37','root','platform','illegal_domains_profile_analysis','utf8')
 collection_name = 'domain_dns_rr'
 import md5
 
@@ -68,9 +68,6 @@ def get_ip_cname_domain_relationship():
         # 构建ip_gemeral_list （ip总表）
         build_ip_general_list(ips,ip_geos,visit_times)
 
-    # 更新ip表中的gamble_num,porno_num等
-    update_ip_general_list_count()
-
 
 def build_ip_domain_relationship(domain,illegal_type,ips,detect_time,ip_geos,visit_times):
     '''
@@ -84,6 +81,8 @@ def build_ip_domain_relationship(domain,illegal_type,ips,detect_time,ip_geos,vis
         for index,ip in enumerate(ips):
             country = ip_geos[index]['country']
             region = ip_geos[index]['region']
+            city = ip_geos[index]['city']
+            print city
             # 创建ID
             ID =  md5_id(domain+ip)
             # 整理地理位置信息
@@ -95,10 +94,10 @@ def build_ip_domain_relationship(domain,illegal_type,ips,detect_time,ip_geos,vis
                 # 不要‘省’和‘市’字
                 region = region[:len(region)-1]
 
-            sql = "INSERT INTO domain_ip_relationship(ID,IP,domain,last_detect_time,illegal_type,ip_country,ip_province,visit_times)\
-                 VALUES('%s','%s','%s','%s','%s','%s','%s','%d')\
+            sql = "INSERT INTO domain_ip_relationship(ID,IP,domain,last_detect_time,illegal_type,ip_country,ip_province,ip_city,visit_times)\
+                 VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%d')\
                   ON DUPLICATE KEY\
-                  UPDATE last_detect_time='%s',visit_times='%d'" %(ID,ip,domain,detect_time,illegal_type,country,region,visit_times,detect_time,visit_times)
+                  UPDATE last_detect_time='%s',visit_times=%d;" %(ID,ip,domain,detect_time,illegal_type,country,region,city,visit_times,detect_time,visit_times)
             mysql_conn.exec_cudsql(sql)
         # 执行完所有commit一次
         mysql_conn.commit()
@@ -180,7 +179,10 @@ def update_ip_general_list_count():
 
 
 def main():
-    get_ip_cname_domain_relationship()
+    # 更新domain_ip_relationship,domain_cname_relationship, ip_general_list
+    # get_ip_cname_domain_relationship()
+    # 更新ip表中的gamble_num,porno_num等
+    update_ip_general_list_count()
 
 if __name__ == '__main__':
     main()

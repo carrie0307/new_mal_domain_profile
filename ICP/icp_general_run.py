@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import ICP_pos
-import ip
+import proxy_ip
 import Queue
 import threading
 import requests
@@ -21,18 +21,20 @@ res_q = Queue.Queue()
 
 
 '''数据库连接'''
-mysql_conn = database.mysql_operation.MysqlConn('10.245.146.38','root','platform','illegal_domains_profile','utf8')
+mysql_conn = database.mysql_operation.MysqlConn('10.245.146.37','root','platform','illegal_domains_profile','utf8')
 
 '''线程数量'''
-thread_num = 2
+thread_num = 10
+
+flag = 0
 
 
-def get_domains():
+def get_domains(flag):
     '''
     功能:从数据库中读取未获取权威icp信息的域名，添加入域名队列
     '''
     global mysql_conn
-    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp LIMIT 10;"
+    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp WHERE flag = %d LIMIT 50000;" %(flag)
     fetch_data = mysql_conn.exec_readsql(sql)
     if fetch_data == False:
         print "获取数据有误..."
@@ -53,8 +55,7 @@ def get_chinaz_icp_info():
     global dm_page_icp_q
 
     print 'get chainz icp...'
-    proxy = ip.available_IP_q.get() # 获取一个代理
-    print 'init proxy:', proxy
+    proxy = proxy_ip.available_ip_proxy_q.get() # 获取一个代理
 
     while not domain_q.empty():
         domain,last_auth_icp,last_page_icp = domain_q.get()
@@ -64,9 +65,9 @@ def get_chinaz_icp_info():
         except Exception, e: # 其他异常
             print str(e)
             if "Connection" in str(e):
+                print '更换代理 ... '
                 domain_q.put([domain,last_auth_icp,last_page_icp]) # 被ban导致的获取失败，将域名加入队列，重新获取
-                proxy = ip.available_IP_q.get()
-                print proxy
+                proxy = proxy_ip.available_ip_proxy_q.get() # 获取一个代理
                 continue
             else:
                 print str(e)
@@ -74,19 +75,21 @@ def get_chinaz_icp_info():
                 print domain + "获取html异常"
                 continue
         # 进行处理获取icp内容内容
-        auth_icp = get_icp_info(html)
+        auth_icp = get_icp_info(domain,html)
         if auth_icp:
             # icp地理位置解析
             auth_icp_locate = ICP_pos.get_icp_pos(auth_icp) if auth_icp != '--' else ''
-            print domain,'auth_icp:', auth_icp
+            # print domain,'auth_icp:', auth_icp
             dm_page_icp_q.put([domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate])
         else:
             # 提取失败（可能是页面获取有误导致）的重新获取页面
-            domain_q.put([domain,last_auth_icp,last_page_icp])
+            pass
+            #  不做成立，事后单独研究
+            # domain_q.put([domain,last_auth_icp,last_page_icp])
     print '权威icp获取完成...'
 
 
-def get_icp_info(html):
+def get_icp_info(domain, html):
     '''
     功能： 提取chinaz页面的icp信息
     '''
@@ -99,11 +102,11 @@ def get_icp_info(html):
             content = re.compile(r'<p class="tc col-red fz18 YaHei pb20">([^<]+?)<a href="javascript:" class="updateByVcode">').findall(html)
         icp = content[0]
         if icp == u"未备案或者备案取消，获取最新数据请":
-            print '---:',icp
             icp = '--'
         return icp
     except:
-        print "chinaz页面提取icp异常..."
+        print domain, "   chinaz页面提取icp异常..."
+        print content
         return ''
 
 
@@ -177,7 +180,6 @@ def get_page_icp(html):
     try:
         pattern1 = re.compile(u'([\u4e00-\u9fa5]{0,1}ICP[\u5907]{0,1}[\d]{6,8}[\u53f7]*-*[\d]*)').findall(html)
         # pattern1 = re.compile(u'([\u4e00-\u9fa5]{0,1}ICP[\u5907]{0,1}.*[\d]{6,8}[\u53f7]*-*[\d]*)').findall(html)
-        print '1:', pattern1
         if pattern1 != []:
             icp = pattern1[0]
         else:
@@ -259,28 +261,28 @@ def mysql_save_icp():
 
 
 if __name__ == '__main__':
-    # QUESTION:代码中撤销flag的标志？？？这样新加入的数据可以直接运行，只要在update中每次令flag自增即可
-    # QUESTION： 每次运行update时是否要令reuse_check,icp_tag置为空？
-    # flag = 2
-
+    proxy_ip.proxy_ip_general_run()
+    time.sleep(20)
+    print '开始icp运行...'
     # '''开始icp批量获取'''
-    # get_domains()
-    # get_chinaz_icp_td = []
-    # for _ in range(thread_num):
-    #     get_chinaz_icp_td.append(threading.Thread(target=get_chinaz_icp_info))
-    # print '开始获取权威icp信息...'
-    # for td in get_chinaz_icp_td:
-    #     td.start()
-    # time.sleep(10)
-    # get_page_icp_td = []
-    # for _ in range(thread_num):
-    #     get_page_icp_td.append(threading.Thread(target=get_page_icp_info))
-    # print '开始获取页面icp信息...'
-    # for page_td in get_page_icp_td:
-    #     page_td.start()
-    # print '开始存储icp信息...\n'
-    # save_db_td = threading.Thread(target=mysql_save_icp)
-    # save_db_td.start()
-    # save_db_td.join()
-    # mysql_conn.close_db()
+    get_domains(flag)
+    get_chinaz_icp_td = []
+    for _ in range(thread_num):
+        get_chinaz_icp_td.append(threading.Thread(target=get_chinaz_icp_info))
+    print '开始获取权威icp信息...'
+    for td in get_chinaz_icp_td:
+        td.start()
+    time.sleep(10)
+    get_page_icp_td = []
+    for _ in range(thread_num):
+        get_page_icp_td.append(threading.Thread(target=get_page_icp_info))
+    print '开始获取页面icp信息...'
+    for page_td in get_page_icp_td:
+        page_td.start()
+    print '开始存储icp信息...\n'
+    save_db_td = threading.Thread(target=mysql_save_icp)
+    save_db_td.start()
+    save_db_td.join()
+    mysql_conn.close_db()
+    print '-----------------'
     # print '运行结束，请检查是否有未完成数据;若完成，则令运行icp_analyze.py,输入flag= ' + str(flag+1)

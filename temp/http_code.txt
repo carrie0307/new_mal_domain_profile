@@ -1,0 +1,4 @@
+baidu.com	200
+taobao.com	200
+qq.com	200
+ifeng.com	200
