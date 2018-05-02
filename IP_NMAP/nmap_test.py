@@ -50,4 +50,4 @@ def get_ip_state(ip):
 
 
 if __name__ == '__main__':
-    get_ip_state('103.240.42.10')
+    print get_ip_state('101.1.17.42')

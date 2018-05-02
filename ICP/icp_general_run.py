@@ -11,6 +11,8 @@ import datetime
 import re
 import time
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
 import database.mysql_operation
 
@@ -24,7 +26,7 @@ res_q = Queue.Queue()
 mysql_conn = database.mysql_operation.MysqlConn('10.245.146.37','root','platform','illegal_domains_profile','utf8')
 
 '''线程数量'''
-thread_num = 10
+thread_num = 1
 
 flag = 0
 
@@ -34,7 +36,7 @@ def get_domains(flag):
     功能:从数据库中读取未获取权威icp信息的域名，添加入域名队列
     '''
     global mysql_conn
-    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp WHERE flag = %d LIMIT 50000;" %(flag)
+    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp WHERE flag = %d;" %(flag)
     fetch_data = mysql_conn.exec_readsql(sql)
     if fetch_data == False:
         print "获取数据有误..."
@@ -49,7 +51,7 @@ def get_domains(flag):
 
 def get_chinaz_icp_info():
     '''
-    功能： 从站长之家获取包含域名icp信息的原始页面（注意由于被ban的问题，添加了获取代理），将html页面添加入队列
+    功能： 从站长之家获取包含dm_page_icp_q域名icp信息的原始页面（注意由于被ban的问题，添加了获取代理），将html页面添加入队列
     '''
     global domain_q
     global dm_page_icp_q
@@ -78,7 +80,10 @@ def get_chinaz_icp_info():
         auth_icp = get_icp_info(domain,html)
         if auth_icp:
             # icp地理位置解析
-            auth_icp_locate = ICP_pos.get_icp_pos(auth_icp) if auth_icp != '--' else ''
+            if auth_icp != '--' and '域名' not in auth_icp and auth_icp != '404':
+                auth_icp_locate = ICP_pos.get_icp_pos(auth_icp)
+            else:
+                auth_icp_locate = ''
             # print domain,'auth_icp:', auth_icp
             dm_page_icp_q.put([domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate])
         else:
@@ -95,11 +100,14 @@ def get_icp_info(domain, html):
     '''
     if "<h2>404" in html:
         #获取icp异常 eg. www.365bet.cd的查询结果
-        return ''
+        return '404'
     try:
         content = re.compile(r'<p><font>(.+?)</font>').findall(html)
         if content == []:
             content = re.compile(r'<p class="tc col-red fz18 YaHei pb20">([^<]+?)<a href="javascript:" class="updateByVcode">').findall(html)
+            if not content:
+                # 一般这里提取到的是”请输入正确域名”
+                content = re.compile(r'<p class="tc col-red fz18 YaHei pb20">([^<]+?)</p>').findall(html)
         icp = content[0]
         if icp == u"未备案或者备案取消，获取最新数据请":
             icp = '--'
@@ -227,7 +235,7 @@ def mysql_save_icp():
 
     while True:
         try:
-            domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate,page_icp,page_icp_locate,code = res_q.get(timeout=500)
+            domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate,page_icp,page_icp_locate,code = res_q.get(timeout=50)
         except Queue.Empty:
             break
             print '存储结束'

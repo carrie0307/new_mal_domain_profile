@@ -120,12 +120,13 @@ if __name__ == '__main__':
     # 苏ICP备06057086号-1	苏ICP备06057086号
     # 浙B2-20110001-7	B2-20110001
     # 浙B2-20110489-3
-    print get_icp_cmp_res('浙B2-20110001-7','B2-20110001')
+    # print get_icp_cmp_res('浙B2-20110001-7','B2-20110001')
     # s = '浙ICP备-20150105号-3'
     # print chardet.detect(s)['encoding']
     # s = '浙B2-20140102-9'
     # print chardet.detect(s)['encoding']
     # print std_deal_icp('粤ICP备11086197号')
+    print std_deal_icp('浙B2-20110001-7')
 
     # flag = 3
     # page_recheck(flag)

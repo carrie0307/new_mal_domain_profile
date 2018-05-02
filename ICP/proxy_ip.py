@@ -62,7 +62,7 @@ def watch_ip_num():
             counter = counter + 1
         else:
             print '当前可用代理数量：', str(available_ip_proxy_q.qsize())
-            timesleep(300)
+            time.sleep(300)
 
 def proxy_ip_general_run():
     get_raw_proxy_ip()

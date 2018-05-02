@@ -12,6 +12,7 @@ mongo_conn = database.mongo_operation.MongoConn('10.245.146.37','illegal_domains
 mysql_conn = database.mysql_operation.MysqlConn('10.245.146.37','root','platform','illegal_domains_profile','utf8')
 import datetime
 import schedule
+import random
 
 """多线程相关"""
 import Queue
@@ -97,8 +98,10 @@ def get_domains():
     global mysql_conn
     global domain_q
 
-    sql = "SELECT domain,illegal_type FROM illegal_domains_index;"
+    sql = "SELECT domain,illegal_type FROM illegal_domains_index LIMIT 100;"
     fetch_data =list(mysql_conn.exec_readsql(sql))
+    # 将数据打乱
+    random.shuffle(fetch_data)
     for domain,illegal_type in fetch_data:
         #print domain,illegal_type
         domain_q.put([domain,illegal_type])

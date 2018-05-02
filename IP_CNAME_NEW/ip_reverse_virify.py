@@ -25,7 +25,7 @@ def get_domains():
     :return: [(ip,domain), (ip,domain), ...]
     '''
     domain_ip_list = []
-    sql = "SELECT ip,domain FROM ip_reverse_new WHERE ip_detail = '';"
+    sql = "SELECT ip,domain FROM ip_reverse_new WHERE ip_detail is null;"
     fetch_data =list(mysql_conn.exec_readsql(sql))
     for item in fetch_data:
         domain_ip_list.append(item)
