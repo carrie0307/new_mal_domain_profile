@@ -8,12 +8,12 @@ import re
 import chardet
 import sys
 reload(sys)
-# sys.setdefaultencoding('utf-8')
+sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
 import database.mysql_operation
 
 '''数据库连接'''
-mysql_conn = database.mysql_operation.MysqlConn('10.245.146.43','root','platform','mal_domain_profile','utf8')
+mysql_conn = database.mysql_operation.MysqlConn('10.245.146.37','root','platform','illegal_domains_profile','utf8')
 
 def page_recheck(flag):
     """
@@ -32,13 +32,13 @@ def page_recheck(flag):
         domains = [item[0] for item in fetch_data]
         reuse_domains = ';'.join(domains)
         sql = "UPDATE domain_icp SET reuse_check = '%s' WHERE page_icp = '%s';" %(reuse_domains,page_icp)
+        print reuse_domains,page_icp
         exec_res = mysql_conn.exec_cudsql(sql)
     sql = "UPDATE domain_icp SET reuse_check = '未获取到页面ICP' WHERE page_icp ='-1' or page_icp = '--';"
     exec_res = mysql_conn.exec_cudsql(sql)
     sql = "UPDATE domain_icp SET reuse_check = '未发现重复' WHERE reuse_check is NULL;"
     exec_res = mysql_conn.exec_cudsql(sql)
     mysql_conn.commit()
-    print '查重处理完成...'
 
 
 def icp_cmp(flag):
@@ -113,9 +113,19 @@ def get_icp_cmp_res(auth_icp,page_icp):
         return '虚假ICP'
 
 
+def main():
+    flag = 1
+    # page_recheck(flag)
+    # print '查重处理完成...'
+    icp_cmp(flag)
+    print '特征分析完成...'
+
+
+
 
 
 if __name__ == '__main__':
+    main()
     # 粤ICP备11086197号-1	粤ICP备11086197号
     # 苏ICP备06057086号-1	苏ICP备06057086号
     # 浙B2-20110001-7	B2-20110001
@@ -126,10 +136,4 @@ if __name__ == '__main__':
     # s = '浙B2-20140102-9'
     # print chardet.detect(s)['encoding']
     # print std_deal_icp('粤ICP备11086197号')
-    print std_deal_icp('浙B2-20110001-7')
-
-    # flag = 3
-    # page_recheck(flag)
-    # print '查重处理完成...'
-    # icp_cmp(flag)
-    # print '特征分析完成...'
+    # print std_deal_icp('浙B2-20110001-7')

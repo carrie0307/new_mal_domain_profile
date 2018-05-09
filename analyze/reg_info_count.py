@@ -15,9 +15,9 @@ import database.mysql_operation
 
 
 '''数据库连接'''
-mysql_conn = database.mysql_operation.MysqlConn('10.245.146.38','root','platform','illegal_domains_profile','utf8')
+mysql_conn = database.mysql_operation.MysqlConn('10.245.146.37','root','platform','illegal_domains_profile','utf8')
 '''分析层数据库连接'''
-analysis_mysql_conn = database.mysql_operation.MysqlConn('10.245.146.38','root','platform','illegal_domains_profile_analysis','utf8')
+analysis_mysql_conn = database.mysql_operation.MysqlConn('10.245.146.37','root','platform','illegal_domains_profile_analysis','utf8')
 
 
 def type_count(reg_type):

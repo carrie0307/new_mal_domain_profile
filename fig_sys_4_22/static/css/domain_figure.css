@@ -28,3 +28,11 @@
     background-repeat: no-repeat;
     width: 194px; height: 82px;
 }
+
+.sub_domain .baby_domain .panel-body{
+    padding:0px;
+}
+
+.baby_domain table{
+    font-size:10px;
+}

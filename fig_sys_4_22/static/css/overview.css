@@ -1,0 +1,22 @@
+.innerdiv{
+	top: 10%;
+	left: 35%;
+	bottom: 10px;
+	padding: 10px;
+	position:absolute;
+	background-color: #fff;
+}
+
+.outerdiv{
+    position:fixed;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.7);
+    z-index:2;width:100%;
+    height:100%;
+    display:none;
+}
+
+.btn_fig{
+    margin-left:600px;
+}

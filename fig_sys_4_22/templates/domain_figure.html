@@ -506,54 +506,66 @@
                             <div class="col-lg-12">
                                 <h3 id="total_num" style="margin-top:-20px;margin-bottom:20px;">子域名总数量为10</h3>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-12 mother_domain">
                                 <div class="panel panel-info">
-                                    <div id="sub3_num" class="panel-heading">
-                                        <strong>三级子域名数量：2</strong>
+                                    <div class="panel-heading">
+                                        <strong>子域名总数量为10</strong>
                                     </div>
-                                    <div class="panel-body">
-                                        <table id="sub3_table" class="table">
+                                    <div class="panel-body"  style="height:200px;">
 
-                                        </table>
+                                    </div>
+                            </div>
+                            <div class="col-lg-12 baby_domain">
+                                <div class="col-lg-3">
+                                    <div class="panel panel-info">
+                                        <div id="sub3_num" class="panel-heading">
+                                            <strong>三级子域名数量：2</strong>
+                                        </div>
+                                        <div class="panel-body">
+                                            <table id="sub3_table" class="table">
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="panel panel-info">
+                                        <div id="sub4_num" class="panel-heading">
+                                            <strong>四级子域名数量：2</strong>
+                                        </div>
+                                        <div class="panel-body">
+                                            <table id="sub4_table" class="table">
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="panel panel-info">
+                                        <div id="sub5_num" class="panel-heading">
+                                            <strong>五级子域名数量：2</strong>
+                                        </div>
+                                        <div class="panel-body">
+                                            <table id="sub5_table" class="table">
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="panel panel-info">
+                                        <div id="sub6_num" class="panel-heading">
+                                            <strong>六级子域名数量：2</strong>
+                                        </div>
+                                        <div class="panel-body">
+                                            <table id="sub6_table" class="table">
+
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
-                                <div class="panel panel-info">
-                                    <div id="sub4_num" class="panel-heading">
-                                        <strong>四级子域名数量：2</strong>
-                                    </div>
-                                    <div class="panel-body">
-                                        <table id="sub4_table" class="table">
 
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="panel panel-info">
-                                    <div id="sub5_num" class="panel-heading">
-                                        <strong>五级子域名数量：2</strong>
-                                    </div>
-                                    <div class="panel-body">
-                                        <table id="sub5_table" class="table">
-
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="panel panel-info">
-                                    <div id="sub6_num" class="panel-heading">
-                                        <strong>六级子域名数量：2</strong>
-                                    </div>
-                                    <div class="panel-body">
-                                        <table id="sub6_table" class="table">
-
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -604,46 +616,6 @@
 				imgShow("#outerdiv", "#innerdiv", "#bigimg", _this);
 			});
 		});
-
-		<!--function imgShow(outerdiv, innerdiv, bigimg, _this) {-->
-			<!--var src = _this.attr("src");-->
-			<!--$(bigimg).attr("src", src);-->
-
-			<!--/*获取当前点击图片的真实大小，并显示弹出层及大图*/-->
-			<!--$("<img/>").attr("src", src).load(function() {-->
-				<!--var windowW = $(window).width();-->
-				<!--var windowH = $(window).height();-->
-				<!--var realWidth = this.width;-->
-				<!--var realHeight = this.height;-->
-				<!--var imgWidth, imgHeight;-->
-				<!--var scale = 0.8;-->
-
-				<!--if(realWidth > windowW * scale) {-->
-					<!--imgWidth = windowW * scale;-->
-					<!--imgHeight = imgWidth / realWidth * realHeight;-->
-				<!--} else {-->
-					<!--imgWidth = realWidth;-->
-					<!--imgHeight = realHeight;-->
-				<!--}-->
-				<!--$(bigimg).css("width", imgWidth);-->
-
-				<!--var w = (windowW - imgWidth) / 2;-->
-				<!--var h = (windowH - imgHeight) / 2;-->
-				<!--if(h<60){-->
-				    <!--h = 60;-->
-				<!--};-->
-				<!--$(innerdiv).css({-->
-					<!--"top": h,-->
-					<!--"left": w,-->
-					<!--"bottom":10-->
-				<!--});-->
-				<!--$(outerdiv).fadeIn("fast");-->
-			<!--});-->
-
-			<!--$(outerdiv).click(function() {-->
-				<!--$(this).fadeOut("fast");-->
-			<!--});-->
-		<!--}-->
 
     var results={% raw analyse_results %};
     var domain = {% raw domain %};

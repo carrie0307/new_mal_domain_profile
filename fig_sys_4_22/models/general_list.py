@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from Base import Base
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 class QueryDomainGeneralInfo(Base):
     """
@@ -111,19 +114,26 @@ class QueryDomainGeneralInfo(Base):
         sql = "select domain,dm_type,http_code,update_time from domain_general_list where domain=%s"+limit_num
         result = self.mysql_db.get(sql, domain)
 
-        print result
-        print "lallalalallal=--------"
-
-        result['update_time'] = str(result['update_time'])
-        if (isinstance(result['http_code'], unicode) or isinstance(result['http_code'], str))and result['http_code'] != '':
-            if result['http_code'][0]=='2':
-                result['http_code'] = '可访问'+ ' ('+result['http_code']+')'
-            elif result['http_code'][0] == '3':
-                result['http_code'] = '重定向'+ ' ('+result['http_code']+')'
-            else:
-                result['http_code'] = '不可访问'+ ' ('+result['http_code']+')'
+        if result is None:
+            result = {
+                "domain":"",
+                "update_time":"",
+                "dm_type":"",
+                "http_code":""
+            }
         else:
-            result['http_code'] = '未检测'
+            result['update_time'] = str(result['update_time'])
+            if (isinstance(result['http_code'], unicode) or isinstance(result['http_code'], str)) and result[
+                'http_code'] != '':
+                if result['http_code'][0] == '2':
+                    result['http_code'] = '可访问' + ' (' + result['http_code'] + ')'
+                elif result['http_code'][0] == '3':
+                    result['http_code'] = '重定向' + ' (' + result['http_code'] + ')'
+                else:
+                    result['http_code'] = '不可访问' + ' (' + result['http_code'] + ')'
+            else:
+                result['http_code'] = '未检测'
+
         return result
 
 if __name__ == "__main__":

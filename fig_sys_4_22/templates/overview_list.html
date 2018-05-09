@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block style %}
+<link rel="stylesheet" href="{{static_url('css/overview.css')}}">
+{% end %}
+
 {% block page %}
 
 <div class="row">
@@ -13,7 +17,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <li class="fa fa-group fa-fw"></li>
-                <p style="display:inline-block">TOP{{ topn }}注册商信息概览表 &nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=registrar">查看详情&gt;&gt;&gt;</a></p>
+                <p style="display:inline-block">TOP{{ topn }}注册商信息概览表 &nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=registrar">查看详情&gt;&gt;&gt;</a><button type="button" id="registrar_show" class="btn btn-primary btn_fig">点击查看图表</button></p>
             </div>
             <table id="registrar" class="table table-striped table-hover table-bordered" style="width:100%;">
             </table>
@@ -25,7 +29,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <li class="fa fa-group fa-fw"></li>
-                <p style="display:inline-block">TOP{{ topn }}注册者信息概览表&nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=reg_name">查看详情&gt;&gt;&gt;</a></p>
+                <p style="display:inline-block">TOP{{ topn }}注册者信息概览表&nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=reg_name">查看详情&gt;&gt;&gt;</a><button type="button" id="reg_name_show" class="btn btn-primary btn_fig">点击查看图表</button></p>
             </div>
             <table id="reg_name" class="table table-striped table-hover table-bordered" style="width:100%;">
             </table>
@@ -37,7 +41,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <li class="fa fa-group fa-fw"></li>
-                <p style="display:inline-block">TOP{{ topn }}注册电话信息概览表&nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=reg_phone">查看详情&gt;&gt;&gt;</a></p>
+                <p style="display:inline-block">TOP{{ topn }}注册电话信息概览表&nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=reg_phone">查看详情&gt;&gt;&gt;</a><button type="button" id="reg_phone_show" class="btn btn-primary btn_fig">点击查看图表</button></p>
             </div>
             <table id="reg_phone" class="table table-striped table-hover table-bordered" style="width:100%;">
             </table>
@@ -49,7 +53,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <li class="fa fa-group fa-fw"></li>
-                <p style="display:inline-block">TOP{{ topn }}注册邮箱信息概览表&nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=reg_email">查看详情&gt;&gt;&gt;</a></p>
+                <p style="display:inline-block">TOP{{ topn }}注册邮箱信息概览表&nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=reg_email">查看详情&gt;&gt;&gt;</a><button type="button" id="reg_email_show" class="btn btn-primary btn_fig">点击查看图表</button></p>
             </div>
             <table id="reg_email" class="table table-striped table-hover table-bordered" style="width:100%;">
             </table>
@@ -61,7 +65,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <li class="fa fa-group fa-fw"></li>
-                <p style="display:inline-block">TOP{{ topn }}服务IP信息概览表&nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=ip">查看详情&gt;&gt;&gt;</a></p>
+                <p style="display:inline-block">TOP{{ topn }}服务IP信息概览表&nbsp;&nbsp;&nbsp;<a href="/keyinfo_general_list?source=ip">查看详情&gt;&gt;&gt;</a><button type="button" id="ip_show" class="btn btn-primary btn_fig">点击查看图表</button></p>
             </div>
             <table id="ip" class="table table-striped table-hover table-bordered" style="width:100%;">
             </table>
@@ -81,17 +85,26 @@
     </div>
 </div>
 
+<div class="outerdiv">
+    <div class="innerdiv">
+        <div id="change_id" style="width:600px;height:400px;">
+        </div>
+    </div>
+</div>
+
 {% end %}
 
 {% block scripts %}
 <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+<script src="https://cdn.bootcss.com/echarts/3.7.2/echarts.min.js"></script>
+<script src="{{ static_url("js/chart.js")}}"></script>
 <script src="{{ static_url("js/table.js")}}"></script>
 <script src="{{ static_url("js/ajax.js")}}"></script>
 <script type="text/javascript">
     var topn = {% raw topn %};
     var url= "/keyinfo_overview_list/data";
     var paras = {
-        table_ids:["registrar","reg_name","reg_phone","reg_email","ip","ip_geo"],
+        table_ids:["registrar","reg_name","reg_phone","reg_email","ip","ip_geo","registrar_fig","reg_name_fig","reg_phone_fig","reg_email_fig","ip_fig"],
         rows:[10,10,10,10,10,50],
         table_cols : [
             [
@@ -240,6 +253,53 @@
         topn:topn,
     };
     showData(url,option,paras,[show_overview_tables]);
+
+            $(function() {
+				$("#registrar_show").click(function() {
+					var _this = $(this);
+					tableShow(".outerdiv", ".innerdiv", "#change_id", _this);
+					paras_table(6);
+
+				});
+				$("#reg_name_show").click(function() {
+					var _this = $(this);
+					tableShow(".outerdiv", ".innerdiv", "#change_id", _this);
+					paras_table(7);
+				});
+				$("#reg_phone_show").click(function() {
+					var _this = $(this);
+					tableShow(".outerdiv", ".innerdiv", "#change_id", _this);
+					paras_table(8);
+				});
+				$("#reg_email_show").click(function() {
+					var _this = $(this);
+					tableShow(".outerdiv", ".innerdiv", "#change_id", _this);
+					paras_table(9);
+				});
+				$("#ip_show").click(function() {
+					var _this = $(this);
+					tableShow(".outerdiv", ".innerdiv", "#change_id", _this);
+					paras_table(10);
+				});
+
+			});
+
+			function paras_table(num){
+			    var paras = { table_num:6 };
+			    paras.table_num = num;
+			    showData(url,option,paras,[show_statistic_bar]);
+			}
+
+			function tableShow(outerdiv, innerdiv, table, _this) {
+
+				$(outerdiv).fadeIn("fast"); //淡入显示#outerdiv及.pimg
+
+				$(outerdiv).click(function() { //再次点击淡出消失弹出层
+					$(this).fadeOut("fast");
+				});
+			}
+
+
 </script>
 
 {% end %}

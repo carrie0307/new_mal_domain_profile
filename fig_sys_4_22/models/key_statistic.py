@@ -98,12 +98,20 @@ class IPStatistic(Base):
 
 if __name__ == "__main__":
     kw = KeyWhoisStatistic()
-    print kw.keywhois('sponsoring_registrar', -1, has_all=True)
+    # print kw.keywhois('sponsoring_registrar', -1, has_all=True)
     # print kw.keywhois('sponsoring_registrar',-1,maltype='Gamble')
     # print kw.keywhois('reg_email', 4,maltype='Porno')
     # print kw.keywhois('reg_name', 4)
     # print kw.keywhois('sponsoring_registrar',4)
-    print kw.keywhois('reg_phone', -1, has_all=True)
+    # print kw.keywhois('reg_phone', -1, has_all=True)
     # ips = IPStatistic()
     # print ips.ip_baseinfo(5)
     # print ips.ip_baseinfo(5, maltype='Gamble')
+
+    has_all = True
+    topn = 10
+    registrar_list = KeyWhoisStatistic().keywhois('sponsoring_registrar', topn, has_all=has_all)
+    reg_name_list = KeyWhoisStatistic().keywhois('reg_name', topn, has_all=has_all)
+    reg_phone_list = KeyWhoisStatistic().keywhois('reg_phone', topn, has_all=has_all)
+    reg_email_list = KeyWhoisStatistic().keywhois('reg_email', topn, has_all=has_all)
+    print reg_email_list

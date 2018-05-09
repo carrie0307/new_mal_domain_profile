@@ -77,4 +77,5 @@ class IP_history(Base):
 
 if __name__ == '__main__':
     ip_history_getter = IP_history('0345.info')
-    print ip_history_getter.get_history_record()
+    res = ip_history_getter.get_history_record()
+    print res

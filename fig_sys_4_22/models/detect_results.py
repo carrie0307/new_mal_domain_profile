@@ -224,6 +224,7 @@ class QueryDetectResut(Base):
                   " from detect_results where domain=%s"
 
         result = self.mysql_db.get(sql,domain)
+
         for key in result:
             if not result[key] and key != 'vt_rs' and key != 'vt_it':
                 result[key] = '---'
@@ -234,15 +235,19 @@ class QueryDetectResut(Base):
 if __name__ == "__main__":
     qr = QueryDetectResut()
     # print qr.get_detect_results('0-360c.com','tencent')
-    print qr.get_detect_results('vns36066.com','virustotal')
+    # print qr.get_detect_results('vns36066.com','virustotal')
     # print qr.get_detect_results('0-360c.com', 'baidu')
     # print qr.get_detect_results('0-360c.com', 'sanliuling')
     # print qr.get_detect_results('0-360c.com', 'jinshan')
     # print qr.get_detect_results('0-360c.com', 'macfree')
     # print qr.get_detect_results('0-360c.com', 'virustotal')
-    res = qr.get_detect_results('000000.in')
-    for key,value in res.iteritems():
-        print key
-        for k,v in value.iteritems():
-            print k
-            print v
+
+    # res = qr.get_detect_results('000000.in')
+    # for key,value in res.iteritems():
+    #     print key
+    #     for k,v in value.iteritems():
+    #         print k
+    #         print v
+
+    print qr.get_detect_results('000000.in')
+    # print qr.get_detect_results('0371tk.com')

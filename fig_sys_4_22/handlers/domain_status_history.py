@@ -31,6 +31,7 @@ class IPHistoryDataHandler(BaseHandler):
         self.get_authenticated()
         domain = self.get_argument('domain',default_domain)
         res = IP_history(domain).get_history_record()
+        res.reverse()
         self.write(json.dumps(res))
 
 class WhoisHistoryHandler(BaseHandler):

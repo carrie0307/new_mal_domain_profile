@@ -213,7 +213,7 @@ function show_general_table(data,paras){
 }
 
 function show_overview_tables(data,paras){
-    for(j=0; j < paras.table_ids.length; j++){
+    for(j=0; j < 6; j++){
         parameters = {
             table_id : paras.table_ids[j],
             cols : paras.table_cols[j],
