@@ -13,7 +13,7 @@ sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
 import database.mysql_operation
 mysql_conn = database.mysql_operation.MysqlConn('10.245.146.43','root','platform','mal_domain_profile','utf8')
-table_name = 'ip_reverse_new'
+table_name = 'ip_reverse_new2'
 
 resolver = dns.resolver.Resolver(configure=False)
 resolver.nameservers = ['1.2.4.8']
@@ -41,7 +41,7 @@ def get_domains():
     '''
     global domain_q
     global table_name
-    sql = "SELECT ip,domain FROM %s WHERE ip_detail is null;" %(table_name)
+    sql = "SELECT ip,domain FROM %s WHERE ip_flag = -2;" %(table_name)
     fetch_data =list(mysql_conn.exec_readsql(sql))
     for item in fetch_data:
         ip,domain = item
@@ -58,7 +58,7 @@ def get_IP_record(domain):
     '''
     global resolver
     for _ in range(3):
-        flag = 0 # 始终正常获取标志位
+        flag = False # 标志是否正常完成了获取
         ip_details = []
         try:
             resp_A = resolver.query(domain, 'A')
@@ -75,7 +75,8 @@ def get_IP_record(domain):
                 if record[3] == 'A':
                     ip = record[4].split('\n')[0]
                     ip_details.append(ip)
-            flag = 1
+            # 正常获取到了IP
+            flag = True
             break
         except dns.resolver.NoAnswer, e:
             ip_details.append('A Record Exception msg:NoAnswer')
@@ -95,30 +96,23 @@ def cmp_ip_details(flag,ip_details,ip):
     '''
     功能：当前IP与原IP比对
     param: flag: 获取A记录所得flag
-    param: ip_details: get_IP_record所得结果
+    param: ip_details: get_IP_record所得结果(当前IP集合)
     param: ip：从数据库读取的域名原IP
-    return: ip_details: IP记录或异常信息的字符串
     ip_cmp_flag: 原IP与当前IP集合比对结果
                  ip_cmp_flag = 1,  原IP在当前IP集合中
                  ip_cmp_flag = 0,  原IP不在当前IP集合中
                  ip_cmp_flag = -1, 当前IP请求失败，无法进行比对
-    ip_geo_info: 当前IP地理位置信息
+    country,province,city,oper: 当前对原IP进行地理位置解析结果
     '''
     if flag:
         # 如果正常获取到了IP，则进行比对
         ip_cmp_flag = cmp_ip(ip_details,ip)
-        # 进行IP地理位置解析
-        ip_geo_list = []
-        for cur_ip in ip_details:
-            ip_geo_info = ip2region.exec_ip2reg.get_ip_geoinfo(searcher,cur_ip)
-            ip_info = ip_geo_info['country'] + '-' + ip_geo_info['region'] + '-' + ip_geo_info['oper']
-            ip_geo_list.append(ip_info)
-        ip_geo_info = ';'.join(ip_geo_list)
     else:
         ip_cmp_flag = -1
-        ip_geo_info = '---'
-    ip_details = ';'.join(ip_details)
-    return ip_details,ip_cmp_flag,ip_geo_info
+    # 对原IP进行IP地理位置解析
+    ip_geo_info = ip2region.exec_ip2reg.get_ip_geoinfo(searcher,ip)
+    country,province,city,oper = ip_geo_info['country'],ip_geo_info['region'],ip_geo_info['city'],ip_geo_info['oper']
+    return ip_cmp_flag,country,province,city,oper
 
 
 def cmp_ip(ip_details,ip):
@@ -142,9 +136,9 @@ def get_IP_record_handler():
         # 获取A记录
         ip_details,flag = get_IP_record(domain)
         # 进行验证比对与IP地理位置信息获取
-        ip_details,ip_cmp_flag,ip_geo_info = cmp_ip_details(flag,ip_details,ip)
+        ip_cmp_flag,country,province,city,oper = cmp_ip_details(flag,ip_details,ip)
         # 向结果队列中添加
-        res_q.put([domain,ip_details,ip_cmp_flag,ip_geo_info])
+        res_q.put([domain,ip_cmp_flag,country,province,city,oper])
     print '数据获取完成 ... '
 
 
@@ -156,14 +150,15 @@ def mysql_save_info():
     global table_name
     while True:
         try:
-            domain,ip_details,ip_cmp_flag,ip_geo_info = res_q.get(timeout = 100)
+            domain,ip_cmp_flag,country,province,city,oper = res_q.get(timeout = 50)
             insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            print domain,ip_details,ip_cmp_flag,ip_geo_info
+            print domain,ip_cmp_flag,country,province,city,oper
         except Queue.Empty:
             print 'mysql存储获取完成 ... '
+            break
         # sql语句
-        sql = "UPDATE %s SET ip_detail = '%s',flag = %d, ip_geo_info = '%s',ip_verify_time = '%s'\
-               WHERE domain = '%s';" %(table_name,ip_details,ip_cmp_flag,ip_geo_info, insert_time,domain)
+        sql = "UPDATE %s SET ip_flag = %d, country = '%s',province = '%s',city = '%s',oper = '%s',\
+            ip_verify_time = '%s'WHERE domain = '%s';" %(table_name,ip_cmp_flag,country,province,city,oper,insert_time,domain)
         exec_res = mysql_conn.exec_cudsql(sql)
         if exec_res:
             counter += 1
@@ -172,6 +167,7 @@ def mysql_save_info():
                 mysql_conn.commit()
                 counter = 0
     mysql_conn.commit()
+    print 'mysql commit 全部完成 ... '
 
 
 if __name__ == '__main__':

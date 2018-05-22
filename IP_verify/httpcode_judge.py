@@ -10,7 +10,7 @@ import database.mysql_operation
 
 '''数据库连接'''
 mysql_conn = database.mysql_operation.MysqlConn('10.245.146.43','root','platform','mal_domain_profile','utf8')
-table_name = 'ip_reverse_new'
+table_name = 'ip_reverse_new2'
 
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
@@ -24,7 +24,7 @@ def get_domains():
     '''
     global mysql_conn
     global table_name
-    sql = "SELECT domain FROM %s WHERE http_code is null;" %(table_name)
+    sql = "SELECT domain FROM %s WHERE ip_flag = 1 and http_code is null;" %(table_name)
     fetch_data = mysql_conn.exec_readsql(sql)
     if fetch_data == False:
         print "获取数据有误..."
@@ -41,7 +41,7 @@ def get_http_code():
         domain = domain_q.get()
         url = 'http://www.' + domain
         try:
-            resp = urllib2.urlopen(url,timeout=10)
+            resp = urllib2.urlopen(url,timeout=100)
             code = resp.code
         except urllib2.HTTPError, e:
             code = e.code
@@ -62,19 +62,20 @@ def save_res():
 
     while True:
         try:
-            domain,code = res_q.get(timeout=150)
+            domain,code = res_q.get(timeout=10)
             insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         except Queue.Empty:
             print 'save over ... \n'
             break
         print counter, domain, code
+        code = mysql_conn.escape_string(str(code))
         sql = "UPDATE %s SET http_code = '%s',http_code_time = '%s'\
                WHERE domain = '%s';" %(table_name, code,insert_time,domain)
         exec_res = mysql_conn.exec_cudsql(sql)
         if exec_res:
             counter += 1
             # print "counter : " + str(counter)
-            if counter == 500:
+            if counter == 100:
                 mysql_conn.commit()
                 counter = 0
     mysql_conn.commit()

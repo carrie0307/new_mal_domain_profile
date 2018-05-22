@@ -26,6 +26,6 @@ def get_ip_geoinfo(searcher,ip):
 
 if __name__ == '__main__':
     searcher = Ip2Region("ip2region.db")
-    geo_info = get_ip_geoinfo(searcher,"202.102.144.56")
+    geo_info = get_ip_geoinfo(searcher,"221.231.138.20")
     for key in geo_info:
         print key,geo_info[key]
