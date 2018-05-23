@@ -62,7 +62,7 @@ def save_res():
 
     while True:
         try:
-            domain,code = res_q.get(timeout=10)
+            domain,code = res_q.get(timeout=100)
             insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         except Queue.Empty:
             print 'save over ... \n'

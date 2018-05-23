@@ -35,8 +35,28 @@ def get_icp_pos(icp):
         if icp_locate.encode('utf8') in icp_locate_map.keys():
             icp_locate = icp_locate_map[icp_locate.encode('utf8')]['province'].replace('省', '').replace('市', ''). \
                 replace('自治区', '').replace('回族自治区', '').replace('维吾尔自治区', '').replace('壮族自治区', '').replace('特别行政区','')
+        else:
+            # 例如”凶ICP备14006094号-1“,其icp_locate不属于省份的简称
+            icp_locate = '--'
+    if icp_locate is None:
+        # 对应形如“ICP备07045392号-1”无法解析出省份的
+        icp_locate = '--'
     return icp_locate
 
 if __name__ == "__main__":
-    icp = '粤ICP备07045392号-1'
-    print get_icp_pos(icp)
+    # icp = '粵ICP备07014620号'
+    # res = get_icp_pos(icp)
+    # print res
+    import chardet
+    std = '粤'
+    exp = '粵'
+    print std.decode(chardet.detect(std)['encoding']),exp.decode(chardet.detect(std)['encoding'])
+    if std == exp:
+        print 'ok'
+    print chardet.detect(std)
+    print chardet.detect(exp)
+    # print icp_locate_map[std]
+    # print icp_locate_map[exp]
+    # import json
+    # print json.dumps(icp_locate_map, encoding="UTF-8", ensure_ascii=False)
+    # print len(icp_locate_map)

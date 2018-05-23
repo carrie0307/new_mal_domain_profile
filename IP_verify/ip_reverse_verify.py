@@ -150,7 +150,7 @@ def mysql_save_info():
     global table_name
     while True:
         try:
-            domain,ip_cmp_flag,country,province,city,oper = res_q.get(timeout = 50)
+            domain,ip_cmp_flag,country,province,city,oper = res_q.get(timeout = 150)
             insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             print domain,ip_cmp_flag,country,province,city,oper
         except Queue.Empty:
