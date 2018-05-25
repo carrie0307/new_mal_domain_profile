@@ -44,19 +44,6 @@ def get_icp_pos(icp):
     return icp_locate
 
 if __name__ == "__main__":
-    # icp = '粵ICP备07014620号'
-    # res = get_icp_pos(icp)
-    # print res
-    import chardet
-    std = '粤'
-    exp = '粵'
-    print std.decode(chardet.detect(std)['encoding']),exp.decode(chardet.detect(std)['encoding'])
-    if std == exp:
-        print 'ok'
-    print chardet.detect(std)
-    print chardet.detect(exp)
-    # print icp_locate_map[std]
-    # print icp_locate_map[exp]
-    # import json
-    # print json.dumps(icp_locate_map, encoding="UTF-8", ensure_ascii=False)
-    # print len(icp_locate_map)
+    icp = '粵ICP备07014620号'
+    res = get_icp_pos(icp)
+    print res
