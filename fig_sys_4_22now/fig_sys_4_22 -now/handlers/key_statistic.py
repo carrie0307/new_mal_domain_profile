@@ -64,6 +64,7 @@ class KeyStatisticsViewHandler(BaseHandler):
 #         data = json.dumps(data)
 #         self.write(data)
 
+
 class KeyStatisticsViewDataHandler(BaseHandler):
     """关键信息概览统计控制"""
 

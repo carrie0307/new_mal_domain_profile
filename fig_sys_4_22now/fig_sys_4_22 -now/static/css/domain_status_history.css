@@ -103,3 +103,19 @@
 table tr td:first-child{
  width:120px;
 }
+
+#timeline .whowas_title{
+    color: Yellow;
+    font-size:18px;
+    font-weight:bold;
+}
+
+#timeline .whowas_name{
+    color: Yellow;
+    font-size:18px;
+}
+
+#timeline .whowas_content{
+    font-size: 16px;
+    color: #fff;
+}

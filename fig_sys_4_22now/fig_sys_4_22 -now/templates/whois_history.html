@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="{{static_url('css/domain_status_history.css')}}">
+
+{% end %}
+
+{% block page %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 id="whowas_title" style="border-bottom: 1px solid #8C8C8C;padding-bottom: 10px;margin-bottom: 20px;">WHOIS信息历史记录</h1>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="col-lg-12">
+            <ul id='timeline'>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="outerdiv">
+        <div class="innerdiv">
+            <table class="table alert_table table-striped table-hover" style="color: black;">
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+{% end %}
+
+{% block scripts %}
+<!--<script src="{{ static_url(" js/analyse.js")}}"></script>-->
+<!--<script src="{{ static_url("js/ajax.js")}}"></script>-->
+<script src="https://cdn.bootcss.com/echarts/3.7.2/echarts.min.js"></script>
+<script src="{{ static_url("js/chart.js")}}"></script>
+<script src="{{ static_url("js/analyse.js")}}"></script>
+<script type="text/javascript">
+        var whowas_res={% raw whowas_res %};
+        var domain={% raw domain %};
+		var cmp_results={% raw cmp_results %};
+
+		$("#whowas_title").html(domain + " WHOIS信息历史记录");
+		deal_whowas(cmp_results);
+
+        $(function() {
+				$(".date").click(function() {
+					var _this = $(this); //将当前的pimg元素作为_this传入函数
+					date = _this.text();
+					deal_alert_whois(date);
+					tableShow(".outerdiv", ".innerdiv", ".alert_table", _this);
+				});
+			});
+
+			function tableShow(outerdiv, innerdiv, table, _this) {
+
+				$(outerdiv).fadeIn("fast"); //淡入显示#outerdiv及.pimg
+
+				$(outerdiv).click(function() { //再次点击淡出消失弹出层
+					$(this).fadeOut("fast");
+				});
+			}
+
+
+
+
+
+</script>
+
+{% end %}

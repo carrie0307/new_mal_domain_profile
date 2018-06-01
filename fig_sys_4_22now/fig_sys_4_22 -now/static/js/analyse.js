@@ -192,40 +192,110 @@ function deal_ip_history(data,paras){
     }
 }
 
-function deal_content_history(data, paras){
-
-    $(".date").html("");
-
-	if(data==""){
-        var html_none = '<li><div class="block_list"><h3>无数据</h3><span class="circle"></span><span class="square"></span></div></li>';
-        $("#timeline").html(html_none);
-    }
-	else{
-		var data_len = data.length;
-        var html_total = "";
-        for (var i=0; i < data_len; i++){
-            var analyse_results = data[i]['analyse_results'];
-//            var shot_path = data[i]['shot_path'];
-            var shot_path = 'background.jpg';
-
-            var content_html = '';
-            for(var j=0; j<analyse_results.length; j++){
-            		var html = '<tr><td>'+ analyse_results[j][0] + '</td>'
-            					+ '<td>' + analyse_results[j][1] + '</td></tr>';
-            		content_html = content_html + html;
+function deal_alert_whois(date){
+            result = whowas_res[date];
+            var html = '';
+            if('error' in result){
+                html = '<tbody><tr><td style="width:400px;text-align:center;">无数据</td></tr></tbody>';
             }
+            else{
+                html = '<tbody><tr><td>域名</td><td>'+ result['domain'] + '</td></tr>'
+                        + '<tr><td>注册者</td><td>'+ result['reg_name'] + '</td></tr>'
+                        + '<tr><td>电话</td><td>'+ result['reg_phone'] + '</td></tr>'
+                        + '<tr><td>邮箱</td><td>'+ result['reg_email'] + '</td></tr>'
+                        + '<tr><td>注册商</td><td>'+ result['sponsoring_registrar'] + '</td></tr>'
+                        + '<tr><td>注册机构</td><td>'+ result['org_name'] + '</td></tr>'
+                        + '<tr><td>注册时间</td><td>'+ result['creation_date'] + '</td></tr>'
+                        + '<tr><td>过期时间</td><td>'+ result['expiration_date'] + '</td></tr>'
+                        + '<tr><td>更新时间</td><td>'+ result['update_date'] + '</td></tr>'
+                        + '<tr><td>域名状态</td><td>'+ result['domain_status'] + '</td></tr>'
+                        + '<tr><td>Whois服务器</td><td>'+ result['name_server'] + '</td></tr>'
+                        + '<tr><td>一级Whois服务器</td><td>'+ result['top_whois_server'] + '</td></tr>'
+                        + '<tr><td>二级Whois服务器</td><td>'+ result['sec_whois_server'] + '</td></tr>'
+                        + '</tbody>';
+            }
+            $(".alert_table").html("");
+            $(".alert_table").html(html);
+}
 
-            var table_html = '<li><div class="block_list"><h3>内容信息</h3>'
-            					+ '<table class="table table-bordered content-table">' + content_html + '</table>'
-            					+ '<h3>快照</h3><table class="table table-bordered content-table"><tr><td><img src="/static/images/' + shot_path + '" style="width: 750px;height: 400px;"></td></tr> </table>'
-            					+ '<span class="date">' + analyse_results[1][1] + '</span>'
-							    + '<span class="circle"></span><span class="square"></span>'
-            					+ '</div></li>';
+function deal_whowas_rows(data, pos){
+    var htmls = "";
 
-            html_total = html_total + table_html;
+    if(pos == 1){
+        if(JSON.stringify(data) != '{}'){
+            var html = '<p class="whowas_title">增加:</p>';
+            for(var i in data){
+                html = html + '<p class="whowas_name">' + i + ':</p>'
+                            + '<p class="whowas_content">'+ data[i] +'</p>';
+            }
         }
-        $("#timeline").html(html_total);
-	}
+        else{
+            html = '';
+        }
+        return html;
+    }
+    else if(pos == 2){
+        if(JSON.stringify(data) != '{}'){
+            var html = '<p class="whowas_title">删除:</p>';
+            for(var i in data){
+                html = html + '<p class="whowas_name">' + i  + ':</p>'
+                            + '<p class="whowas_content">'+ data[i] +'</p>';
+            }
+        }
+        else{
+            html = '';
+        }
+        return html;
+    }
+    else{
+        if(JSON.stringify(data) != '{}'){
+            var html = '<p class="whowas_title">修改:</p>';
+            for(var i in data){
+                html = html + '<p class="whowas_name">' + i  + ':</p>'
+                            + '<p class="whowas_content">'+ data[i][0]
+                            + '<span style="color:yellow" class="glyphicon glyphicon-chevron-right"></span>'
+                            + data[i][1] +'</p>';
+            }
+        }
+        else{
+            html = '';
+        }
+        return html;
+    }
+}
+
+function deal_whowas(data){
+    var data_len = data.length;
+    var total_html = '';
+    for(var i=0; i<data_len-1; i++){
+        var add = data[i]['add'];
+        var reduce = data[i]['reduce'];
+        var change = data[i]['change'];
+        var time_stamp = data[i]['time_stamp'];
+
+        var add_html = deal_whowas_rows(add, 1);
+        var reduce_html = deal_whowas_rows(reduce, 2);
+        var change_html = deal_whowas_rows(change, 3);
+
+        if(add_html == '' && reduce_html == '' && change_html == ''){
+            change_html = '<p class="whowas_content">非重要更新</p>';
+        }
+
+        var htmls = '<li><div class="block_list">'+ add_html + reduce_html + change_html
+                    + '<span class="date">'+ time_stamp +'</span>'
+                    + '<span class="circle"></span>'
+                    + '<span class="square"></span>'
+                    +'</div></li>';
+        total_html = total_html + htmls;
+
+    }
+    var last_html = '<li><div class="block_list">' + '<p class="whowas_content">非重要更新</p>'
+                    + '<span class="date">'+ data[data_len-1]["time_stamp"] +'</span>'
+                    + '<span class="circle"></span>'
+                    + '<span class="square"></span>'
+                    +'</div></li>';
+    total_html = total_html + last_html;
+    $("#timeline").html(total_html);
 }
 
 function deal_sub_rows(data,table_id){
@@ -244,7 +314,6 @@ function deal_sub_rows(data,table_id){
 }
 
 function add_sub_domain(data, paras){
-
     $("#total_num").html("子域名总数量为 " + data['sub_sum']);
 	$("#sub3_num").html("三级子域名数量: " + data['three_level_sub']['num']);
 	$("#sub4_num").html("四级子域名数量: " + data['four_level_sub']['num']);
@@ -261,4 +330,40 @@ function add_sub_domain(data, paras){
 	deal_sub_rows(data_5,"#sub5_table");
 	deal_sub_rows(data_6,"#sub6_table");
 
+}
+
+function deal_content_history(data, paras){
+
+    $(".date").html("");
+
+	if(data==""){
+        var html_none = '<li><div class="block_list"><h3>无数据</h3><span class="circle"></span><span class="square"></span></div></li>';
+        $("#timeline").html(html_none);
+    }
+	else{
+		var data_len = data.length;
+        var html_total = "";
+        for (var i=0; i < data_len; i++){
+            var analyse_results = data[i]['analyse_results'];
+            var shot_path = data[i]['shot_path'];
+//            var shot_path = 'background.jpg';
+
+            var content_html = '';
+            for(var j=0; j<analyse_results.length; j++){
+            		var html = '<tr><td>'+ analyse_results[j][0] + '</td>'
+            					+ '<td>' + analyse_results[j][1] + '</td></tr>';
+            		content_html = content_html + html;
+            }
+
+            var table_html = '<li><div class="block_list"><h3>内容信息</h3>'
+            					+ '<table class="table table-bordered content-table">' + content_html + '</table>'
+            					+ '<h3>快照</h3><table class="table table-bordered content-table"><tr><td><img src="' + shot_path + '" style="width: 750px;height: 400px;"></td></tr> </table>'
+            					+ '<span class="date">' + analyse_results[1][1] + '</span>'
+							    + '<span class="circle"></span><span class="square"></span>'
+            					+ '</div></li>';
+
+            html_total = html_total + table_html;
+        }
+        $("#timeline").html(html_total);
+	}
 }
